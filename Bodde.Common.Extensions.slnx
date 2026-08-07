@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="Bodde.Common.Extensions.Test/Bodde.Common.Extensions.Test.csproj" />
+  <Project Path="Bodde.Common.Extensions/Bodde.Common.Extensions.csproj" />
+</Solution>
