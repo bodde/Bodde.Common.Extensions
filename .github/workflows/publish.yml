@@ -22,7 +22,16 @@ jobs:
         with:
           dotnet-version: '8.0.x'   # not necessarily matching the library .net version 
 
-      - name: Create clean NuGet.config (v3 only)
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build project
+        run: dotnet build ./Bodde.Common.Extensions/Bodde.Common.Extensions.csproj --configuration Release
+
+      - name: Pack NuGet package
+        run: dotnet pack ./Bodde.Common.Extensions/Bodde.Common.Extensions.csproj --configuration Release --output ./nupkg
+
+      - name: Create clean NuGet.config (v3 only) for NuGet publisg step
         run: |
           cat <<EOF > NuGet.config
           <?xml version="1.0" encoding="utf-8"?>
@@ -32,15 +41,6 @@ jobs:
             </packageSources>
           </configuration>
           EOF
-
-      - name: Restore dependencies
-        run: dotnet restore
-
-      - name: Build project
-        run: dotnet build ./Bodde.Common.Extensions/Bodde.Common.Extensions.csproj --configuration Release
-
-      - name: Pack NuGet package
-        run: dotnet pack ./Bodde.Common.Extensions/Bodde.Common.Extensions.csproj --configuration Release --output ./nupkg
 
       - name: Publish to NuGet using OIDC
         run: dotnet nuget push "./nupkg/*.nupkg" --configfile NuGet.config --skip-duplicate
