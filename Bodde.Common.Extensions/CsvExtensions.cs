@@ -1,14 +1,21 @@
-﻿namespace Bodde.Common.Extensions;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
-public static class CsvExtensions
+namespace Bodde.Common.Extensions
 {
-    public static string ToCsv<TItem>(this IEnumerable<TItem> values, string separator = ",")
+    public static class CsvExtensions
     {
-        return string.Join(separator, values);
-    }
+        public static string ToCsv<TItem>(this IEnumerable<TItem> values, string separator = ",")
+        {
+            return string.Join(separator, values);
+        }
 
-    public static string ToCsv<T>(this IEnumerable<T> values, Func<T, string> toStringFunc, string separator = ",")
-    {
-        return string.Join(separator, values.Select(toStringFunc));
+        public static string ToCsv<T>(this IEnumerable<T> values, Func<T, string> toStringFunc, string separator = ",")
+        {
+            return string.Join(separator, values.Select(toStringFunc));
+        }
     }
 }
+
+
