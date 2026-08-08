@@ -2,6 +2,28 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+
+    <!-- NuGet configuration -->
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageId>Bodde.Common.Extensions</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>Bodde</Authors>
+
+    <!-- Useful metadata -->
+    <Description>Collection of useful extension methods for .NET Standard projects.</Description>
+    <PackageTags>extensions;common;utilities;helpers;dotnet</PackageTags>
+
+    <!-- README -->
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+
+    <!-- GitHub link -->
+    <RepositoryUrl>https://github.com/bodde/Bodde.Common.Extensions</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageProjectUrl>https://github.com/bodde/Bodde.Common.Extensions</PackageProjectUrl>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="../README.md" Pack="true" PackagePath="" />
+  </ItemGroup>
 
 </Project>
