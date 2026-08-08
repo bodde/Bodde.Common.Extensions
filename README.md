@@ -3,11 +3,9 @@
 This package contains a collection of minimal extension method for most common uses.  
 Please refer to the test project sources to see usage.
 
-## string?
+## string
 - [IsNullOrEmpty](Bodde.Common.Extensions.Test/StringExtensions/IsNullOrEmpty.cs)
 - [IsNullOrWhiteSpace](Bodde.Common.Extensions.Test/StringExtensions/IsNullOrWhiteSpace.cs)
-
-## string
 - [IsEmpty](Bodde.Common.Extensions.Test/StringExtensions/IsEmpty.cs)
 - [IsCapitalized](Bodde.Common.Extensions.Test/StringExtensions/IsCapitalized.cs)
 - [Capitalize](Bodde.Common.Extensions.Test/StringExtensions/Capitalize.cs)
