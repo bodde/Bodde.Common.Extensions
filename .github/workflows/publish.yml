@@ -33,7 +33,7 @@ jobs:
 
       - name: Create clean nuget.config (v3 only) for NuGet publish step
         run: |
-          cat <<EOF > nuget.config
+          cat <<EOF > ./nupkg/nuget.config
           <?xml version="1.0" encoding="utf-8"?>
           <configuration>
             <packageSources>
@@ -43,4 +43,5 @@ jobs:
           EOF
 
       - name: Publish to NuGet using OIDC
-        run: dotnet nuget push "./nupkg/*.nupkg" --configfile nuget.config --skip-duplicate
+        run: dotnet nuget push "./nupkg/*.nupkg" --configfile ./nupkg/nuget.config --skip-duplicate
+
