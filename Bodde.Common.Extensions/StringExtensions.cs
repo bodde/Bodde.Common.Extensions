@@ -1,47 +1,46 @@
+using System;
+using System.Collections.Generic;
 using System.Text;
 
-namespace Bodde.Common.Extensions;
-
-public static class StringExtensions
+namespace Bodde.Common.Extensions
 {
-    extension(string? str)
+    public static class StringExtensions
     {
-        public bool IsNullOrEmpty() => string.IsNullOrEmpty(str);        
-        
-        public bool IsNullOrWhiteSpace() => string.IsNullOrWhiteSpace(str);     
-    }
 
-    extension(string str)
-    {
-        public bool IsEmpty() => str.Length == 0;
+        public static bool IsNullOrEmpty(this string str) => string.IsNullOrEmpty(str);
 
-        public bool IsCapitalized()
+        public static bool IsNullOrWhiteSpace(this string str) => string.IsNullOrWhiteSpace(str);
+
+
+        public static bool IsEmpty(this string str) => str.Length == 0;
+
+        public static bool IsCapitalized(this string str)
         {
-            if(str.Length == 0)
+            if (str.Length == 0)
                 return false;
 
             return char.IsUpper(str[0]);
         }
 
-        public string Capitalize()
+        public static string Capitalize(this string str)
         {
-            if (str.IsEmpty())
+            if (str.IsNullOrEmpty())
                 return str;
 
-            return char.ToUpper(str[0]) + str[1..];
-        }        
-
-        public string Uncapitalize()
-        {
-            if (str.IsEmpty())
-                return str;
-
-            return char.ToLower(str[0]) + str[1..];
+            return char.ToUpper(str[0]) + str.Substring(1);
         }
 
-        public string Pluralize()
+        public static string Uncapitalize(this string str)
         {
-            if (str.IsEmpty())
+            if (str.IsNullOrEmpty())
+                return str;
+
+            return char.ToLower(str[0]) + str.Substring(1);
+        }
+
+        public static string Pluralize(this string str)
+        {
+            if (str.IsNullOrEmpty())
                 return str;
 
             bool allUppercase = str == str.ToUpper();
@@ -49,19 +48,19 @@ public static class StringExtensions
 
             var result = PluralizeInternal(str);
 
-            if(allUppercase)
+            if (allUppercase)
                 return result.ToUpper();
 
-            if(isCapitalized)
+            if (isCapitalized)
                 return result.Capitalize();
 
             return result.Uncapitalize();
         }
 
 
-        public string Hyphenize()
+        public static string Hyphenize(this string str)
         {
-            if (str.IsEmpty())
+            if (str.IsNullOrEmpty())
                 return str;
 
             var sb = new StringBuilder();
@@ -76,9 +75,9 @@ public static class StringExtensions
             return sb.Replace(" ", "-").ToString();
         }
 
-        public string Dehyphenize()
-        {            
-            if (str.IsEmpty())
+        public static string Dehyphenize(this string str)
+        {
+            if (str.IsNullOrEmpty())
                 return str;
 
             var sb = new StringBuilder();
@@ -97,33 +96,33 @@ public static class StringExtensions
             }
             return sb.ToString();
         }
-    }
 
-    private static string PluralizeInternal(string str)
-    {
-        if(CommonIrregularPlurals.TryGetValue(str, out var pluralized))
-            return pluralized;
 
-        if (str.EndsWith("y", StringComparison.OrdinalIgnoreCase) && str.Length > 1 && !IsVowel(str[^2]))
-            return $"{str[..^1]}ies";
+        private static string PluralizeInternal(string str)
+        {
+            if (CommonIrregularPlurals.TryGetValue(str, out var pluralized))
+                return pluralized;
 
-        if (str.EndsWith("s", StringComparison.OrdinalIgnoreCase) ||
-                 str.EndsWith("x", StringComparison.OrdinalIgnoreCase) ||
-                 str.EndsWith("z", StringComparison.OrdinalIgnoreCase) ||
-                 str.EndsWith("ch", StringComparison.OrdinalIgnoreCase) ||
-                 str.EndsWith("sh", StringComparison.OrdinalIgnoreCase) ||
-                 str.EndsWith("o", StringComparison.OrdinalIgnoreCase))
-            return $"{str}es";
+            if (str.EndsWith("y", StringComparison.OrdinalIgnoreCase) && str.Length > 1 && !IsVowel(str[str.Length - 2]))
+                return $"{str.Substring(0, str.Length - 1)}ies";
 
-        return $"{str}s";
-    }
+            if (str.EndsWith("s", StringComparison.OrdinalIgnoreCase) ||
+                     str.EndsWith("x", StringComparison.OrdinalIgnoreCase) ||
+                     str.EndsWith("z", StringComparison.OrdinalIgnoreCase) ||
+                     str.EndsWith("ch", StringComparison.OrdinalIgnoreCase) ||
+                     str.EndsWith("sh", StringComparison.OrdinalIgnoreCase) ||
+                     str.EndsWith("o", StringComparison.OrdinalIgnoreCase))
+                return $"{str}es";
 
-    private static bool IsVowel(char c)
-    {
-        return "aeiouAEIOU".IndexOf(c) >= 0;
-    }
+            return $"{str}s";
+        }
 
-    private static Dictionary<string, string> CommonIrregularPlurals = new(StringComparer.OrdinalIgnoreCase)
+        private static bool IsVowel(char c)
+        {
+            return "aeiouAEIOU".IndexOf(c) >= 0;
+        }
+
+        private static Dictionary<string, string> CommonIrregularPlurals = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
     {
         { "Man", "Men" },
         { "Woman", "Women" },
@@ -153,4 +152,5 @@ public static class StringExtensions
         { "Analysis", "Analyses" },
         { "Cactus", "Cacti" }
      };
+    }
 }
