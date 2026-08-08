@@ -31,9 +31,9 @@ jobs:
       - name: Pack NuGet package
         run: dotnet pack ./Bodde.Common.Extensions/Bodde.Common.Extensions.csproj --configuration Release --output ./nupkg
 
-      - name: Create clean NuGet.config (v3 only) for NuGet publish step
+      - name: Create clean nuget.config (v3 only) for NuGet publish step
         run: |
-          cat <<EOF > NuGet.config
+          cat <<EOF > nuget.config
           <?xml version="1.0" encoding="utf-8"?>
           <configuration>
             <packageSources>
@@ -43,4 +43,4 @@ jobs:
           EOF
 
       - name: Publish to NuGet using OIDC
-        run: dotnet nuget push "./nupkg/*.nupkg" --configfile NuGet.config --skip-duplicate
+        run: dotnet nuget push "./nupkg/*.nupkg" --configfile nuget.config --skip-duplicate
