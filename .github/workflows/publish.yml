@@ -1,0 +1,31 @@
+name: Publish to NuGet
+
+on:
+  push:
+    tags:
+      - 'v*' # Activates only with a new version tag (es. v1.0.0)
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'   # not necessarily matching the library .net version 
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build project
+        run: dotnet build --configuration Release
+
+      - name: Pack NuGet package
+        run: dotnet pack ./Bodde.Common.Extensions/Bodde.Common.Extensions.csproj --configuration Release --output ./nupkg
+
+      - name: Publish to NuGet
+        run: dotnet nuget push "./nupkg/*.nupkg" --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
