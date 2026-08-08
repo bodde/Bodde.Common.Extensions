@@ -1,14 +1,18 @@
-name: Publish to NuGet
+name: Publish NuGet Package
 
 on:
   push:
     tags:
-      - 'v*' # Activates only with a new version tag (es. v1.0.0)
+      - 'v*.*.*' # Activates only with a new version tag (es. v1.0.0)
 
 jobs:
   build-and-publish:
     runs-on: ubuntu-latest
     
+    permissions:
+      id-token: write   # OIDC authentication
+      contents: read
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -22,10 +26,10 @@ jobs:
         run: dotnet restore
 
       - name: Build project
-        run: dotnet build --configuration Release
+        run: dotnet build ./Bodde.Common.Extensions/Bodde.Common.Extensions.csproj --configuration Release
 
       - name: Pack NuGet package
         run: dotnet pack ./Bodde.Common.Extensions/Bodde.Common.Extensions.csproj --configuration Release --output ./nupkg
 
-      - name: Publish to NuGet
-        run: dotnet nuget push "./nupkg/*.nupkg" --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+      - name: Publish to NuGet using OIDC
+        run: dotnet nuget push "./nupkg/*.nupkg" --source "https://api.nuget.org/v3/index.json"
