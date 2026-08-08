@@ -31,7 +31,7 @@ jobs:
       - name: Pack NuGet package
         run: dotnet pack ./Bodde.Common.Extensions/Bodde.Common.Extensions.csproj --configuration Release --output ./nupkg
 
-      - name: Create clean NuGet.config (v3 only) for NuGet publisg step
+      - name: Create clean NuGet.config (v3 only) for NuGet publish step
         run: |
           cat <<EOF > NuGet.config
           <?xml version="1.0" encoding="utf-8"?>
