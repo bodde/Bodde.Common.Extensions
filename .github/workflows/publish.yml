@@ -22,6 +22,17 @@ jobs:
         with:
           dotnet-version: '8.0.x'   # not necessarily matching the library .net version 
 
+      - name: Create clean NuGet.config (v3 only)
+        run: |
+          cat <<EOF > NuGet.config
+          <?xml version="1.0" encoding="utf-8"?>
+          <configuration>
+            <packageSources>
+              <add key="nuget" value="https://api.nuget.org/v3/index.json" />
+            </packageSources>
+          </configuration>
+          EOF
+
       - name: Restore dependencies
         run: dotnet restore
 
@@ -32,4 +43,4 @@ jobs:
         run: dotnet pack ./Bodde.Common.Extensions/Bodde.Common.Extensions.csproj --configuration Release --output ./nupkg
 
       - name: Publish to NuGet using OIDC
-        run: dotnet nuget push "./nupkg/*.nupkg" --source "https://api.nuget.org/v3/index.json"
+        run: dotnet nuget push "./nupkg/*.nupkg" --configfile NuGet.config --skip-duplicate
