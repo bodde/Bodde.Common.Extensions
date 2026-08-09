@@ -10,8 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     
     permissions:
-      id-token: write   # OIDC authentication
-      contents: read
+      id-token: write   # enable GitHub OIDC token issuance for this job
 
     steps:
       - name: Checkout repository
@@ -30,9 +29,16 @@ jobs:
 
       - name: Pack NuGet package
         run: dotnet pack ./Bodde.Common.Extensions/Bodde.Common.Extensions.csproj --configuration Release --output ./nupkg
+    
+      # Get a short-lived NuGet API key
+      - name: NuGet login (OIDC → temp API key)
+        uses: NuGet/login@v1
+        id: login
+        with:
+          user: ${{secrets.NUGET_USER}}
 
-      - name: Publish to NuGet using OIDC
+      - name: NuGet push
         run: dotnet nuget push "./nupkg/*.nupkg" \
-            --source "https://api.nuget.org/v3/index.json" \
-            --skip-duplicate
+            --api-key ${{steps.login.outputs.NUGET_API_KEY}} \
+            --source "https://api.nuget.org/v3/index.json"
 
