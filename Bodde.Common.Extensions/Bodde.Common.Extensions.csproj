@@ -12,6 +12,7 @@
     <!-- Useful metadata -->
     <Description>Collection of useful extension methods for .NET Standard projects.</Description>
     <PackageTags>extensions;common;utilities;helpers;dotnet</PackageTags>
+    <PackageIcon>bodde-icon-128.png</PackageIcon>
 
     <!-- README -->
     <PackageReadmeFile>README.md</PackageReadmeFile>
@@ -24,6 +25,7 @@
 
   <ItemGroup>
     <None Include="../README.md" Pack="true" PackagePath="" />
+    <None Include="images/bodde-icon-128.png" Pack="true" PackagePath="" />
   </ItemGroup>
 
 </Project>
