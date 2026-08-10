@@ -94,7 +94,7 @@ Please refer to the test project sources to see usage.
   var employees = new[]
   {
       new { Name = "John", Surname = "Smith", Age = 35 }
-      new { Name = "Mario", Surname = "Tossi", Age = 24 }
+      new { Name = "Mario", Surname = "Rossi", Age = 24 }
   };
 
   var csv = employees.ToCsv("; ", e => $"{e.Surname}, {e.Name} ({e.Age})");
