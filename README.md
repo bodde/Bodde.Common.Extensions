@@ -42,7 +42,7 @@ Please refer to the test project sources to see usage.
   using Bodde.Common.Extensions;
 
   string value = "hello";
-  var capitalized = value.Capitalize(); // "Hello"
+  var capitalized = value.Capitalize(); // Hello
   ```
 
 ### Uncapitalize
@@ -50,7 +50,7 @@ Please refer to the test project sources to see usage.
   using Bodde.Common.Extensions;
 
   string value = "Hello";
-  var uncapitalized = value.Uncapitalize(); // "hello"
+  var uncapitalized = value.Uncapitalize(); // hello
   ```
 
 ### Pluralize
@@ -58,7 +58,7 @@ Please refer to the test project sources to see usage.
   using Bodde.Common.Extensions;
 
   string value = "box";
-  var plural = value.Pluralize(); // "boxes"
+  var plural = value.Pluralize(); // boxes
   ```
 
 ### Hyphenize
@@ -66,7 +66,7 @@ Please refer to the test project sources to see usage.
   using Bodde.Common.Extensions;
 
   string value = "HelloWorld";
-  var hyphenized = value.Hyphenize(); // "hello-world"
+  var hyphenized = value.Hyphenize(); // hello-world
   ```
 
 ### Dehyphenize
@@ -74,7 +74,7 @@ Please refer to the test project sources to see usage.
   using Bodde.Common.Extensions;
 
   string value = "hello-world";
-  var dehyphenized = value.Dehyphenize(); // "helloWorld"
+  var dehyphenized = value.Dehyphenize(); // helloWorld
   ```
 
 ## IEnumerable\<T\>
@@ -84,7 +84,9 @@ Please refer to the test project sources to see usage.
   using Bodde.Common.Extensions;
 
   string[] values = ["A", "B", "C"];
-  var csv = values.ToCsv(); // "A,B,C"
+  
+  var csv1 = values.ToCsv(); // A,B,C
+  var csv2 = values.ToCsv(separator: "; "); // A; B; C
   ```
 
 ### ToCsv
@@ -94,10 +96,20 @@ Please refer to the test project sources to see usage.
   var employees = new[]
   {
       new { Name = "John", Surname = "Smith", Age = 35 }
-      new { Name = "Mario", Surname = "Rossi", Age = 24 }
+      new { Name = "Mario", Surname = "Rossi", Age = 23 }
   };
 
-  var csv = employees.ToCsv("; ", e => $"{e.Surname}, {e.Name} ({e.Age})");
-  // "Smith, John (35); Rossi, Mario (24)"
+  var csv1 = employees.ToCsv(
+    formatter: e => $"{e.Surname}, {e.Name} ({e.Age})",
+    separator: "; "
+    );
+  // Smith, John (35); Rossi, Mario (23)
+
+  var csv2 = employees.ToCsv(
+    formatter: e => $"{e.Surname},{e.Name},{e.Age}",
+    separator: Environment.NewLine
+    );
+  // John,Smith,35
+  // Mario,Rossi,23
   ```
 

@@ -11,11 +11,10 @@ namespace Bodde.Common.Extensions
             return string.Join(separator, values);
         }
 
-        public static string ToCsv<T>(this IEnumerable<T> values, Func<T, string> toStringFunc, string separator = ",")
+        public static string ToCsv<T>(this IEnumerable<T> values, Func<T, string> formatter, string separator = ",")
         {
-            return string.Join(separator, values.Select(toStringFunc));
+            return string.Join(separator, values.Select(formatter));
         }
     }
 }
-
 

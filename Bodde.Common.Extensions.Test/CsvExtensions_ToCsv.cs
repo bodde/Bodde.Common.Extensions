@@ -1,4 +1,6 @@
-﻿namespace Bodde.Common.Extensions.Test;
+﻿using System.Text;
+
+namespace Bodde.Common.Extensions.Test;
 
 public class CsvExtensions_ToCsv
 {
@@ -38,7 +40,7 @@ public class CsvExtensions_ToCsv
     }
 
     [Fact]
-    public void Employees_Array_ToCsv_Custom_ToString()
+    public void Employees_Array_ToCsv_Custom_Formatter()
     {
         Employee[] sut = [
             new Employee("John", "Smith", 35),
@@ -49,6 +51,29 @@ public class CsvExtensions_ToCsv
         var actual = sut.ToCsv(_ => $"{_.Surname}, {_.Name} ({_.Age})", "; ");
 
         Assert.Equal("Smith, John (35); Rossi, Mario (23); Bodde, Mr (55)", actual);
+    }
+
+    [Fact]
+    public void Employees_Array_ToCsv_Custom_Formatter_NewLine_Separator()
+    {
+        Employee[] sut = [
+            new Employee("John", "Smith", 35),
+            new Employee("Mario", "Rossi", 23),
+        ];
+
+        var actual = sut.ToCsv(
+            formatter: _ => $"{_.Name},{_.Surname},{_.Age}", 
+            separator: Environment.NewLine
+            );
+
+        var expected = String.Join(Environment.NewLine, new []
+        {
+            "John,Smith,35", 
+            "Mario,Rossi,23"
+        });
+
+
+        Assert.Equal(expected, actual);
     }
 
     private record Employee(string Name, string Surname, int Age)
