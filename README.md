@@ -3,7 +3,7 @@
 This package contains a collection of minimal extension methods for the most common uses.
 Please refer to the test project sources to see usage.
 
-## string
+## String extensions
 
 ### IsNullOrEmpty
   ```csharp
@@ -77,7 +77,22 @@ Please refer to the test project sources to see usage.
   var dehyphenized = value.Dehyphenize(); // helloWorld
   ```
 
-## IEnumerable\<T\>
+### Tokenize
+  ```csharp
+  using Bodde.Common.Extensions;
+
+  string value = "A|B|C";
+  var tokens = value.Tokenize('|'); // ["A", "B", "C"]
+
+  string taggedValue = "A<->B<->C";
+  var taggedTokens = taggedValue.Tokenize("<->"); // ["A", "B", "C"]
+
+  string valueWithSpaces = " A |  | C ";
+  var cleanedTokens = valueWithSpaces.Tokenize('|', trim: true, removeEmpty: true);
+  // ["A", "C"]
+  ```
+
+## Csv extensions
 
 ### ToCsv
   ```csharp
