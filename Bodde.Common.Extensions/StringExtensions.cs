@@ -4,7 +4,7 @@ namespace Bodde.Common.Extensions;
 
 public static class StringExtensions
 {
-    extension (string? me)
+    extension(string? me)
     {
         /// <summary>
         /// Determines whether the string is null or empty.
@@ -17,7 +17,7 @@ public static class StringExtensions
         public bool IsNullOrWhiteSpace() => string.IsNullOrWhiteSpace(me);
     }
 
-    extension (string me)
+    extension(string me)
     {
         /// <summary>
         /// Determines whether the string is empty.
@@ -148,7 +148,12 @@ public static class StringExtensions
         /// <param name="removeEmpty">Indicates whether empty tokens should be removed from the result.</param>
         /// <returns>An array containing the tokens extracted from the string.</returns>
         public string[] Tokenize(string separator, bool trim = true, bool removeEmpty = true)
-            => ProcessTokens(me.Split(separator.ToCharArray()), trim, removeEmpty);
+        {
+            if (separator.IsEmpty())
+                throw new ArgumentOutOfRangeException(nameof(separator), "Empty separators are invalid.");
+
+            return ProcessTokens(me.Split([separator], StringSplitOptions.None), trim, removeEmpty);
+        }
     }
 
     private static string PluralizeInternal(string me)
