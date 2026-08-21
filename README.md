@@ -1,20 +1,115 @@
 # Bodde.Common.Extensions
 
-This package contains a collection of minimal extension method for most common uses.  
+This package contains a collection of minimal extension methods for the most common uses.
 Please refer to the test project sources to see usage.
 
 ## string
-- [IsNullOrEmpty](Bodde.Common.Extensions.Test/StringExtensions/IsNullOrEmpty.cs)
-- [IsNullOrWhiteSpace](Bodde.Common.Extensions.Test/StringExtensions/IsNullOrWhiteSpace.cs)
-- [IsEmpty](Bodde.Common.Extensions.Test/StringExtensions/IsEmpty.cs)
-- [IsCapitalized](Bodde.Common.Extensions.Test/StringExtensions/IsCapitalized.cs)
-- [Capitalize](Bodde.Common.Extensions.Test/StringExtensions/Capitalize.cs)
-- [Uncapitalize](Bodde.Common.Extensions.Test/StringExtensions/Uncapitalize.cs)
-- [Pluralize](Bodde.Common.Extensions.Test/StringExtensions/Pluralize.cs)
-- [Hyphenize](Bodde.Common.Extensions.Test/StringExtensions/Hyphenize.cs)
-- [Dehyphenize](Bodde.Common.Extensions.Test/StringExtensions/Dehyphenize.cs)
+
+### IsNullOrEmpty
+  ```csharp
+  using Bodde.Common.Extensions;
+
+  string? value = null;
+  var isNullOrEmpty = value.IsNullOrEmpty(); // true
+  ```
+
+### IsNullOrWhiteSpace
+  ```csharp
+  using Bodde.Common.Extensions;
+
+  string value = "   ";
+  var isNullOrWhiteSpace = value.IsNullOrWhiteSpace(); // true
+  ```
+
+### IsEmpty
+  ```csharp
+  using Bodde.Common.Extensions;
+
+  string value = "";
+  var isEmpty = value.IsEmpty(); // true
+  ```
+
+### IsCapitalized
+  ```csharp
+  using Bodde.Common.Extensions;
+
+  string value = "Hello";
+  var isCapitalized = value.IsCapitalized(); // true
+  ```
+
+### Capitalize
+  ```csharp
+  using Bodde.Common.Extensions;
+
+  string value = "hello";
+  var capitalized = value.Capitalize(); // Hello
+  ```
+
+### Uncapitalize
+  ```csharp
+  using Bodde.Common.Extensions;
+
+  string value = "Hello";
+  var uncapitalized = value.Uncapitalize(); // hello
+  ```
+
+### Pluralize
+  ```csharp
+  using Bodde.Common.Extensions;
+
+  string value = "box";
+  var plural = value.Pluralize(); // boxes
+  ```
+
+### Hyphenize
+  ```csharp
+  using Bodde.Common.Extensions;
+
+  string value = "HelloWorld";
+  var hyphenized = value.Hyphenize(); // hello-world
+  ```
+
+### Dehyphenize
+  ```csharp
+  using Bodde.Common.Extensions;
+
+  string value = "hello-world";
+  var dehyphenized = value.Dehyphenize(); // helloWorld
+  ```
 
 ## IEnumerable\<T\>
 
-- [ToCsv](Bodde.Common.Extensions.Test/CsvExtensions_ToCsv.cs)
+### ToCsv
+  ```csharp
+  using Bodde.Common.Extensions;
+
+  string[] values = ["A", "B", "C"];
+  
+  var csv1 = values.ToCsv(); // A,B,C
+  var csv2 = values.ToCsv(separator: "; "); // A; B; C
+  ```
+
+### ToCsv
+  ```csharp
+  using Bodde.Common.Extensions;
+
+  var employees = new[]
+  {
+      new { Name = "John", Surname = "Smith", Age = 35 }
+      new { Name = "Mario", Surname = "Rossi", Age = 23 }
+  };
+
+  var csv1 = employees.ToCsv(
+    formatter: e => $"{e.Surname}, {e.Name} ({e.Age})",
+    separator: "; "
+    );
+  // Smith, John (35); Rossi, Mario (23)
+
+  var csv2 = employees.ToCsv(
+    formatter: e => $"{e.Surname},{e.Name},{e.Age}",
+    separator: Environment.NewLine
+    );
+  // John,Smith,35
+  // Mario,Rossi,23
+  ```
 

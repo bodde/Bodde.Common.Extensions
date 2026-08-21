@@ -23,14 +23,13 @@ namespace Bodde.Common.Extensions
         /// </summary>
         /// <typeparam name="T">The type of the items in the sequence.</typeparam>
         /// <param name="values">The sequence of values to convert.</param>
-        /// <param name="toStringFunc">The function used to convert each value to a string.</param>
+        /// <param name="formatter">The function used to convert each value to a string.</param>
         /// <param name="separator">The separator to place between converted values.</param>
         /// <returns>A CSV-formatted string containing the converted values.</returns>
-        public static string ToCsv<T>(this IEnumerable<T> values, Func<T, string> toStringFunc, string separator = ",")
+        public static string ToCsv<T>(this IEnumerable<T> values, Func<T, string> formatter, string separator = ",")
         {
-            return string.Join(separator, values.Select(toStringFunc));
+            return string.Join(separator, values.Select(formatter));
         }
     }
 }
-
 
