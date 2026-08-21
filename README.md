@@ -17,7 +17,7 @@ Please refer to the test project sources to see usage.
   ```csharp
   using Bodde.Common.Extensions;
 
-  string value = "   ";
+  string value = " \t ";
   var isNullOrWhiteSpace = value.IsNullOrWhiteSpace(); // true
   ```
 
@@ -89,7 +89,7 @@ Please refer to the test project sources to see usage.
   var csv2 = values.ToCsv(separator: "; "); // A; B; C
   ```
 
-### ToCsv
+### ToCsv with formatter
   ```csharp
   using Bodde.Common.Extensions;
 
