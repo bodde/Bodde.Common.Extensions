@@ -1,8 +1,6 @@
-﻿using System.Text;
+﻿namespace Bodde.Common.Extensions.Test.CsvExtensions;
 
-namespace Bodde.Common.Extensions.Test;
-
-public class CsvExtensions_ToCsv
+public class ToCsv
 {
     [Fact]
     public void ABC_Array_ToCsv()

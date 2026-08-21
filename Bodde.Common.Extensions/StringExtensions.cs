@@ -1,78 +1,79 @@
-using System;
-using System.Collections.Generic;
 using System.Text;
-using System.Text.RegularExpressions;
 
-namespace Bodde.Common.Extensions
+namespace Bodde.Common.Extensions;
+
+public static class StringExtensions
 {
-    public static class StringExtensions
+    extension(string? me)
     {
-
         /// <summary>
         /// Determines whether the string is null or empty.
         /// </summary>
-        public static bool IsNullOrEmpty(this string str) => string.IsNullOrEmpty(str);
+        public bool IsNullOrEmpty() => string.IsNullOrEmpty(me);
 
         /// <summary>
         /// Determines whether the string is null, empty, or contains only white-space characters.
         /// </summary>
-        public static bool IsNullOrWhiteSpace(this string str) => string.IsNullOrWhiteSpace(str);
+        public bool IsNullOrWhiteSpace() => string.IsNullOrWhiteSpace(me);
+    }
 
+    extension(string me)
+    {
         /// <summary>
         /// Determines whether the string is empty.
         /// </summary>
-        public static bool IsEmpty(this string str) => str.Length == 0;
+        public bool IsEmpty() => me.Length == 0;
 
         /// <summary>
         /// Determines whether the string is empty or contains only white-space characters.
         /// </summary>
-        public static bool IsEmptyOrWhiteSpace(this string str) => Regex.IsMatch(str, @"^\s*$");
+        public bool IsEmptyOrWhiteSpace() => me.Length == 0 || string.IsNullOrWhiteSpace(me);
 
         /// <summary>
         /// Determines whether the first character of the string is uppercase.
         /// </summary>
-        public static bool IsCapitalized(this string str)
+        public bool IsCapitalized()
         {
-            if (str.Length == 0)
+            if (me.Length == 0)
                 return false;
 
-            return char.IsUpper(str[0]);
+            return char.IsUpper(me[0]);
         }
 
         /// <summary>
         /// Converts the first character of the string to uppercase.
         /// </summary>
-        public static string Capitalize(this string str)
+        public string Capitalize()
         {
-            if (str.IsNullOrEmpty())
-                return str;
+            if (me.IsNullOrEmpty())
+                return me;
 
-            return char.ToUpper(str[0]) + str.Substring(1);
+            return char.ToUpper(me[0]) + me.Substring(1);
         }
 
         /// <summary>
         /// Converts the first character of the string to lowercase.
         /// </summary>
-        public static string Uncapitalize(this string str)
+        public string Uncapitalize()
         {
-            if (str.IsNullOrEmpty())
-                return str;
+            if (me.IsNullOrEmpty())
+                return me;
 
-            return char.ToLower(str[0]) + str.Substring(1);
+            return char.ToLower(me[0]) + me.Substring(1);
         }
 
         /// <summary>
         /// Returns the plural form of the string.
         /// </summary>
-        public static string Pluralize(this string str)
+        public string Pluralize()
         {
-            if (str.IsNullOrEmpty())
-                return str;
+            if (me.IsNullOrEmpty())
+                return me;
 
-            bool allUppercase = str == str.ToUpper();
-            bool isCapitalized = str.IsCapitalized();
+            bool allUppercase = me == me.ToUpper();
+            bool isCapitalized = me.IsCapitalized();
 
-            var result = PluralizeInternal(str);
+            var result = PluralizeInternal(me);
 
             if (allUppercase)
                 return result.ToUpper();
@@ -87,19 +88,19 @@ namespace Bodde.Common.Extensions
         /// <summary>
         /// Converts the string to kebab-case using hyphens as separators.
         /// </summary>
-        public static string Hyphenize(this string str)
+        public string Hyphenize()
         {
-            if (str.IsNullOrEmpty())
-                return str;
+            if (me.IsNullOrEmpty())
+                return me;
 
             var sb = new StringBuilder();
-            for (int i = 0; i < str.Length; i++)
+            for (int i = 0; i < me.Length; i++)
             {
-                if (char.IsUpper(str[i]) && i > 0)
+                if (char.IsUpper(me[i]) && i > 0)
                 {
                     sb.Append('-');
                 }
-                sb.Append(char.ToLower(str[i]));
+                sb.Append(char.ToLower(me[i]));
             }
             return sb.Replace(" ", "-").ToString();
         }
@@ -107,54 +108,79 @@ namespace Bodde.Common.Extensions
         /// <summary>
         /// Removes hyphens and capitalizes the following character.
         /// </summary>
-        public static string Dehyphenize(this string str)
+        public string Dehyphenize()
         {
-            if (str.IsNullOrEmpty())
-                return str;
+            if (me.IsNullOrEmpty())
+                return me;
 
             var sb = new StringBuilder();
             bool capitalizeNext = false;
-            for (int i = 0; i < str.Length; i++)
+            for (int i = 0; i < me.Length; i++)
             {
-                if (str[i] == '-')
+                if (me[i] == '-')
                 {
                     capitalizeNext = true;
                 }
                 else
                 {
-                    sb.Append(capitalizeNext ? char.ToUpper(str[i]) : str[i]);
+                    sb.Append(capitalizeNext ? char.ToUpper(me[i]) : me[i]);
                     capitalizeNext = false;
                 }
             }
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Splits the string into tokens using the specified separator.
+        /// </summary>
+        /// <param name="separator">The character used to separate tokens.</param>
+        /// <param name="trim">Indicates whether leading and trailing whitespace should be removed from each token.</param>
+        /// <param name="removeEmpty">Indicates whether empty tokens should be removed from the result.</param>
+        /// <returns>An array containing the tokens extracted from the string.</returns>
+        public string[] Tokenize(char separator, bool trim = true, bool removeEmpty = true)
+            => ProcessTokens(me.Split(separator), trim, removeEmpty);
 
-        private static string PluralizeInternal(string str)
+        /// <summary>
+        /// Splits the string into tokens using the specified separator.
+        /// </summary>
+        /// <param name="separator">The character used to separate tokens.</param>
+        /// <param name="trim">Indicates whether leading and trailing whitespace should be removed from each token.</param>
+        /// <param name="removeEmpty">Indicates whether empty tokens should be removed from the result.</param>
+        /// <returns>An array containing the tokens extracted from the string.</returns>
+        public string[] Tokenize(string separator, bool trim = true, bool removeEmpty = true)
         {
-            if (CommonIrregularPlurals.TryGetValue(str, out var pluralized))
-                return pluralized;
+            if (separator.IsEmpty())
+                throw new ArgumentOutOfRangeException(nameof(separator), "Empty separators are invalid.");
 
-            if (str.EndsWith("y", StringComparison.OrdinalIgnoreCase) && str.Length > 1 && !IsVowel(str[str.Length - 2]))
-                return $"{str.Substring(0, str.Length - 1)}ies";
-
-            if (str.EndsWith("s", StringComparison.OrdinalIgnoreCase) ||
-                     str.EndsWith("x", StringComparison.OrdinalIgnoreCase) ||
-                     str.EndsWith("z", StringComparison.OrdinalIgnoreCase) ||
-                     str.EndsWith("ch", StringComparison.OrdinalIgnoreCase) ||
-                     str.EndsWith("sh", StringComparison.OrdinalIgnoreCase) ||
-                     str.EndsWith("o", StringComparison.OrdinalIgnoreCase))
-                return $"{str}es";
-
-            return $"{str}s";
+            return ProcessTokens(me.Split([separator], StringSplitOptions.None), trim, removeEmpty);
         }
+    }
 
-        private static bool IsVowel(char c)
-        {
-            return "aeiouAEIOU".IndexOf(c) >= 0;
-        }
+    private static string PluralizeInternal(string me)
+    {
+        if (CommonIrregularPlurals.TryGetValue(me, out var pluralized))
+            return pluralized;
 
-        private static Dictionary<string, string> CommonIrregularPlurals = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+        if (me.EndsWith("y", StringComparison.OrdinalIgnoreCase) && me.Length > 1 && !IsVowel(me[me.Length - 2]))
+            return $"{me.Substring(0, me.Length - 1)}ies";
+
+        if (me.EndsWith("s", StringComparison.OrdinalIgnoreCase) ||
+                    me.EndsWith("x", StringComparison.OrdinalIgnoreCase) ||
+                    me.EndsWith("z", StringComparison.OrdinalIgnoreCase) ||
+                    me.EndsWith("ch", StringComparison.OrdinalIgnoreCase) ||
+                    me.EndsWith("sh", StringComparison.OrdinalIgnoreCase) ||
+                    me.EndsWith("o", StringComparison.OrdinalIgnoreCase))
+            return $"{me}es";
+
+        return $"{me}s";
+    }
+
+    private static bool IsVowel(char c)
+    {
+        return "aeiouAEIOU".IndexOf(c) >= 0;
+    }
+
+    private static Dictionary<string, string> CommonIrregularPlurals = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
     {
         { "Man", "Men" },
         { "Woman", "Women" },
@@ -184,5 +210,16 @@ namespace Bodde.Common.Extensions
         { "Analysis", "Analyses" },
         { "Cactus", "Cacti" }
      };
+
+    private static string[] ProcessTokens(string[] tokens, bool trim, bool removeEmpty)
+    {
+        if (trim)
+            tokens = tokens.Select(_ => _.Trim()).ToArray();
+
+        if (removeEmpty)
+            tokens = tokens.Where(_ => _.IsNullOrEmpty() == false).ToArray();
+
+        return tokens;
     }
 }
+
