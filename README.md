@@ -88,8 +88,7 @@ Please refer to the test project sources to see usage.
   var taggedTokens = taggedValue.Tokenize("<->"); // ["A", "B", "C"]
 
   string valueWithSpaces = " A |  | C ";
-  var cleanedTokens = valueWithSpaces.Tokenize('|', trim: true, removeEmpty: true);
-  // ["A", "C"]
+  var cleanedTokens = valueWithSpaces.Tokenize('|', trim: true, removeEmpty: true);  // ["A", "C"]
   ```
 
 ## Csv extensions
@@ -101,11 +100,12 @@ Please refer to the test project sources to see usage.
   string[] values = ["A", "B", "C"];
   
   var csv1 = values.ToCsv(); // A,B,C
+
   var csv2 = values.ToCsv(separator: "; "); // A; B; C
 
   var employees = new[]
   {
-      new { Name = "John", Surname = "Smith", Age = 35 }
+      new { Name = "John", Surname = "Smith", Age = 35 },
       new { Name = "Mario", Surname = "Rossi", Age = 23 }
   };
 
@@ -114,13 +114,6 @@ Please refer to the test project sources to see usage.
     separator: "; "
     );
   // Smith, John (35); Rossi, Mario (23)
-
-  var csv4 = employees.ToCsv(
-    formatter: e => $"{e.Surname},{e.Name},{e.Age}",
-    separator: Environment.NewLine
-    );
-  // John,Smith,35
-  // Mario,Rossi,23
   ```
 
 ### FromCsv
@@ -130,39 +123,23 @@ Please refer to the test project sources to see usage.
   string input1 = "A, B, C";
   var result1 = input1.FromCsv(); // ["A", "B", "C"]
 
-  string input2 = "10, 20, 30";
-  var result2 = input2.FromCsv<int>(); // [10, 20, 30]
+  string input2 = "A, B, C";
+  var result2 = input2.FromCsv(trim: false); // ["A", " B", " C"]
 
-  string input3 = "true, false, true";
-  var result3 = input3.FromCsv<bool>(); // [true, false, true]
+  string input3 = "A, B, , C";
+  var result3 = input3.FromCsv(); // ["A", " B", " ", "C"]
 
-  string input4 = "A<->B<->C";
-  var result4 = input4.FromCsv("<->"); // ["A", "B", "C"]
+  string input4 = "A, B, , C";
+  var result4 = input4.FromCsv(removeEmpty: true); // ["A", "B", "C"]
 
-  string input5 = "Mario, Rossi, 23";
-  var result5 = input5.FromCsv(tokens => new Employee(
-    Name: tokens[0], 
-    Surname: tokens[1], 
-    Age: int.Parse(tokens[2])
-    ));
+  string input5 = "10, 20, 30";
+  var result5 = input5.FromCsv<int>(); // [10, 20, 30]
 
-  var input6 = string.Join(Environment.NewLine, new []
-  {
-      "Mario, Rossi, 23",
-      "John, Smith, 35"
-  });
+  string input6 = "true, false, true";
+  var result6 = input6.FromCsv<bool>(); // [true, false, true]
 
-  var result6 = input6
-      .FromCsv(Environment.NewLine)
-      .FromCsv(tokens => new Employee(
-        Name: tokens[0], 
-        Surname: tokens[1], 
-        Age: int.Parse(tokens[2])
-        ));
-   // Employee[] 
-   // {
-   //   new("Mario", "Rossi", 23), 
-   //   new("John", "Smith", 35)
-   // }    
+  string input7 = "A|B|C";
+  var result7 = input7.FromCsv(separator: "|"); // ["A", "B", "C"]
+
   ```
 

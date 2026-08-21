@@ -9,10 +9,7 @@ public static class CsvExtensions
         /// </summary>
         /// <param name="separator">The separator to place between values.</param>
         /// <returns>A CSV-formatted string containing the values.</returns>
-        public string ToCsv(string separator = ",")
-        {
-            return string.Join(separator, me);
-        }
+        public string ToCsv(string separator = ",") => string.Join(separator, me);
 
         /// <summary>
         /// Converts a sequence of values to a CSV-formatted string using a custom conversion function.
@@ -45,42 +42,14 @@ public static class CsvExtensions
         /// <param name="separator">The separator between values.</param>
         /// <param name="trim">Indicates whether leading and trailing whitespace should be removed from each value.</param>
         /// <param name="removeEmpty">Indicates whether empty values should be removed from the result.</param>
-        /// <param name="defaultIfEmpty">The value to use when an empty value is found.</param>
         /// <returns>An array containing the converted values.</returns>
-        public T[] FromCsv<T>(string separator = ",", bool trim = true, bool removeEmpty = false, T? defaultIfEmpty = default) 
+        public T[] FromCsv<T>(string separator = ",", bool trim = true, bool removeEmpty = false) 
             where T: IConvertible
             => me
                 .FromCsv(separator, trim, removeEmpty)
-                .Select(t => t.IsEmpty() ? defaultIfEmpty : Convert.ChangeType(t, typeof(T)))
+                .Select(t => Convert.ChangeType(t, typeof(T)))
                 .Cast<T>()
                 .ToArray();
-
-        /// <summary>
-        /// Parses the values in a CSV-formatted string using a custom parser.
-        /// </summary>
-        /// <typeparam name="T">The type returned by the parser.</typeparam>
-        /// <param name="parser">The function used to convert the extracted values.</param>
-        /// <param name="separator">The separator between values.</param>
-        /// <param name="trim">Indicates whether leading and trailing whitespace should be removed from each value.</param>
-        /// <param name="removeEmpty">Indicates whether empty values should be removed from the result.</param>
-        /// <returns>The value produced by the custom parser.</returns>
-        public T FromCsv<T>(Func<string[], T> parser, string separator = ",", bool trim = true, bool removeEmpty = false) 
-            => parser(me.FromCsv(separator, trim, removeEmpty));
-    }
-
-    extension(string[] me)
-    {
-        /// <summary>
-        /// Parses each CSV-formatted string in an array using a custom parser.
-        /// </summary>
-        /// <typeparam name="T">The type returned by the parser.</typeparam>
-        /// <param name="parser">The function used to convert the values extracted from each CSV-formatted string.</param>
-        /// <param name="separator">The separator between values in each CSV-formatted string.</param>
-        /// <param name="trim">Indicates whether leading and trailing whitespace should be removed from each value.</param>
-        /// <param name="removeEmpty">Indicates whether empty values should be removed from the result passed to the parser.</param>
-        /// <returns>An array containing the values produced by the custom parser.</returns>
-        public T[] FromCsv<T>(Func<string[], T> parser, string separator = ",", bool trim = true, bool removeEmpty = false) 
-            => me.Select(item => item.FromCsv(parser, separator, trim, removeEmpty)).ToArray();
     }
 }
 

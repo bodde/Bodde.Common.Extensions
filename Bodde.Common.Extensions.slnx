@@ -1,4 +1,7 @@
 <Solution>
+  <Folder Name="/Samples/">
+    <Project Path="Samples/Samples.ConsoleApp/Samples.ConsoleApp.csproj" />
+  </Folder>
   <Project Path="Bodde.Common.Extensions.Test/Bodde.Common.Extensions.Test.csproj" />
   <Project Path="Bodde.Common.Extensions/Bodde.Common.Extensions.csproj" />
 </Solution>

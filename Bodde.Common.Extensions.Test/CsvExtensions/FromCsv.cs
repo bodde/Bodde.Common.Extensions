@@ -1,4 +1,7 @@
-﻿namespace Bodde.Common.Extensions.Test.CsvExtensions;
+﻿using System.Text.RegularExpressions;
+using Microsoft.VisualBasic;
+
+namespace Bodde.Common.Extensions.Test.CsvExtensions;
 
 public class FromCsv
 {
@@ -44,25 +47,12 @@ public class FromCsv
     }
 
     [Fact]
-    public void Empty_ToIntArray_With_Zero_Element()
+    public void Empty_ToIntArray_Empty_Array()
     {
         var sut = string.Empty;
-        var expected = new[] { 0 };
+        var expected = new int[] {};
 
-        var actual = sut.FromCsv<int>();
-
-        Assert.Equal(expected, actual);
-    }
-
-
-    [Fact]
-    public void Empty_ToIntArray_With_Default_Element()
-    {
-        var sut = string.Empty;
-        var defaultValue = 5;
-        var expected = new[] { defaultValue };
-
-        var actual = sut.FromCsv<int>(defaultIfEmpty: defaultValue);
+        var actual = sut.FromCsv<int>(removeEmpty: true);
 
         Assert.Equal(expected, actual);
     }
@@ -103,62 +93,5 @@ public class FromCsv
         var actual = sut.FromCsv<bool>(trim: trim, removeEmpty: removeEmpty);
 
         Assert.Equal(expected, actual);
-    }
-
-
-    [Fact]
-    public void ToObject()
-    {
-        var sut = "Mario, Rossi, 23";
-        var expected = new Employee("Mario", "Rossi", 23);
-
-        var actual = sut.FromCsv(tokens => new Employee(
-            Name: tokens[0], 
-            Surname: tokens[1], 
-            Age: int.Parse(tokens[2])
-            ));
-
-        Assert.Equal(expected, actual);
-    }
-
-
-
-    [Fact]
-    public void ToObjects()
-    {
-        var sut = "Mario, Rossi, 23; John, Smith, 35";
-        var expected = new Employee[] { new("Mario", "Rossi", 23), new("John", "Smith", 35) };
-
-        var actual = sut
-            .FromCsv(";")
-            .FromCsv(tokens => new Employee(tokens[0], tokens[1], int.Parse(tokens[2])));
-
-        Assert.Equal(expected, actual);
-    }
-
-    [Fact]
-    public void Multiline_ToObjects()
-    {
-        var multilineCsv = string.Join(Environment.NewLine, new []
-        {
-            "Mario, Rossi, 23",
-            "John, Smith, 35"
-        });
-
-        var expected = new Employee[] { new("Mario", "Rossi", 23), new("John", "Smith", 35) };
-
-        var actual = multilineCsv
-            .FromCsv(Environment.NewLine)
-            .FromCsv(tokens => new Employee(tokens[0], tokens[1], int.Parse(tokens[2])));
-
-        Assert.Equal(expected, actual);
-    }
-
-    private record Employee(string Name, string Surname, int Age)
-    {
-        public override string ToString()
-        {
-            return $"{Name} {Surname} ({Age})";
-        }
     }
 }
