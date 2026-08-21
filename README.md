@@ -102,11 +102,6 @@ Please refer to the test project sources to see usage.
   
   var csv1 = values.ToCsv(); // A,B,C
   var csv2 = values.ToCsv(separator: "; "); // A; B; C
-  ```
-
-### ToCsv with formatter
-  ```csharp
-  using Bodde.Common.Extensions;
 
   var employees = new[]
   {
@@ -114,17 +109,60 @@ Please refer to the test project sources to see usage.
       new { Name = "Mario", Surname = "Rossi", Age = 23 }
   };
 
-  var csv1 = employees.ToCsv(
+  var csv3 = employees.ToCsv(
     formatter: e => $"{e.Surname}, {e.Name} ({e.Age})",
     separator: "; "
     );
   // Smith, John (35); Rossi, Mario (23)
 
-  var csv2 = employees.ToCsv(
+  var csv4 = employees.ToCsv(
     formatter: e => $"{e.Surname},{e.Name},{e.Age}",
     separator: Environment.NewLine
     );
   // John,Smith,35
   // Mario,Rossi,23
+  ```
+
+### FromCsv
+  ```csharp
+  using Bodde.Common.Extensions;
+
+  string input1 = "A, B, C";
+  var result1 = input1.FromCsv(); // ["A", "B", "C"]
+
+  string input2 = "10, 20, 30";
+  var result2 = input2.FromCsv<int>(); // [10, 20, 30]
+
+  string input3 = "true, false, true";
+  var result3 = input3.FromCsv<bool>(); // [true, false, true]
+
+  string input4 = "A<->B<->C";
+  var result4 = input4.FromCsv("<->"); // ["A", "B", "C"]
+
+  string input5 = "Mario, Rossi, 23";
+  var result5 = input5.FromCsv(tokens => new Employee(
+    Name: tokens[0], 
+    Surname: tokens[1], 
+    Age: int.Parse(tokens[2])
+    ));
+
+  var input6 = string.Join(Environment.NewLine, new []
+  {
+      "Mario, Rossi, 23",
+      "John, Smith, 35"
+  });
+
+  var result6 = input6
+      .FromCsv(Environment.NewLine)
+      .FromCsv(tokens => new Employee(
+        Name: tokens[0], 
+        Surname: tokens[1], 
+        Age: int.Parse(tokens[2])
+        ));
+   // Employee[] 
+   // {
+   //   new("Mario", "Rossi", 23), 
+   //   new("John", "Smith", 35)
+   // }    
   ```
 
