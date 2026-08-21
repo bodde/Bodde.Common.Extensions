@@ -2,7 +2,6 @@ using System.Text;
 
 namespace Bodde.Common.Extensions;
 
-
 public static class StringExtensions
 {
     extension (string? me)
@@ -131,26 +130,44 @@ public static class StringExtensions
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Splits the string into tokens using the specified separator.
+        /// </summary>
+        /// <param name="separator">The character used to separate tokens.</param>
+        /// <param name="trim">Indicates whether leading and trailing whitespace should be removed from each token.</param>
+        /// <param name="removeEmpty">Indicates whether empty tokens should be removed from the result.</param>
+        /// <returns>An array containing the tokens extracted from the string.</returns>
+        public string[] Tokenize(char separator, bool trim = true, bool removeEmpty = true)
+            => ProcessTokens(me.Split(separator), trim, removeEmpty);
 
-        private string PluralizeInternal()
-        {
-            if (CommonIrregularPlurals.TryGetValue(me, out var pluralized))
-                return pluralized;
+        /// <summary>
+        /// Splits the string into tokens using the specified separator.
+        /// </summary>
+        /// <param name="separator">The character used to separate tokens.</param>
+        /// <param name="trim">Indicates whether leading and trailing whitespace should be removed from each token.</param>
+        /// <param name="removeEmpty">Indicates whether empty tokens should be removed from the result.</param>
+        /// <returns>An array containing the tokens extracted from the string.</returns>
+        public string[] Tokenize(string separator, bool trim = true, bool removeEmpty = true)
+            => ProcessTokens(me.Split(separator.ToCharArray()), trim, removeEmpty);
+    }
 
-            if (me.EndsWith("y", StringComparison.OrdinalIgnoreCase) && me.Length > 1 && !IsVowel(me[me.Length - 2]))
-                return $"{me.Substring(0, me.Length - 1)}ies";
+    private static string PluralizeInternal(string me)
+    {
+        if (CommonIrregularPlurals.TryGetValue(me, out var pluralized))
+            return pluralized;
 
-            if (me.EndsWith("s", StringComparison.OrdinalIgnoreCase) ||
-                     me.EndsWith("x", StringComparison.OrdinalIgnoreCase) ||
-                     me.EndsWith("z", StringComparison.OrdinalIgnoreCase) ||
-                     me.EndsWith("ch", StringComparison.OrdinalIgnoreCase) ||
-                     me.EndsWith("sh", StringComparison.OrdinalIgnoreCase) ||
-                     me.EndsWith("o", StringComparison.OrdinalIgnoreCase))
-                return $"{me}es";
+        if (me.EndsWith("y", StringComparison.OrdinalIgnoreCase) && me.Length > 1 && !IsVowel(me[me.Length - 2]))
+            return $"{me.Substring(0, me.Length - 1)}ies";
 
-            return $"{me}s";
-        }
+        if (me.EndsWith("s", StringComparison.OrdinalIgnoreCase) ||
+                    me.EndsWith("x", StringComparison.OrdinalIgnoreCase) ||
+                    me.EndsWith("z", StringComparison.OrdinalIgnoreCase) ||
+                    me.EndsWith("ch", StringComparison.OrdinalIgnoreCase) ||
+                    me.EndsWith("sh", StringComparison.OrdinalIgnoreCase) ||
+                    me.EndsWith("o", StringComparison.OrdinalIgnoreCase))
+            return $"{me}es";
 
+        return $"{me}s";
     }
 
     private static bool IsVowel(char c)
@@ -188,5 +205,16 @@ public static class StringExtensions
         { "Analysis", "Analyses" },
         { "Cactus", "Cacti" }
      };
+
+    private static string[] ProcessTokens(string[] tokens, bool trim, bool removeEmpty)
+    {
+        if (trim)
+            tokens = tokens.Select(_ => _.Trim()).ToArray();
+
+        if (removeEmpty)
+            tokens = tokens.Where(_ => _.IsNullOrEmpty() == false).ToArray();
+
+        return tokens;
+    }
 }
 
