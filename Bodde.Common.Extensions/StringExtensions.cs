@@ -1,19 +1,36 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Bodde.Common.Extensions
 {
     public static class StringExtensions
     {
 
+        /// <summary>
+        /// Determines whether the string is null or empty.
+        /// </summary>
         public static bool IsNullOrEmpty(this string str) => string.IsNullOrEmpty(str);
 
+        /// <summary>
+        /// Determines whether the string is null, empty, or contains only white-space characters.
+        /// </summary>
         public static bool IsNullOrWhiteSpace(this string str) => string.IsNullOrWhiteSpace(str);
 
-
+        /// <summary>
+        /// Determines whether the string is empty.
+        /// </summary>
         public static bool IsEmpty(this string str) => str.Length == 0;
 
+        /// <summary>
+        /// Determines whether the string is empty or contains only white-space characters.
+        /// </summary>
+        public static bool IsEmptyOrWhiteSpace(this string str) => Regex.IsMatch(str, @"^\s*$");
+
+        /// <summary>
+        /// Determines whether the first character of the string is uppercase.
+        /// </summary>
         public static bool IsCapitalized(this string str)
         {
             if (str.Length == 0)
@@ -22,6 +39,9 @@ namespace Bodde.Common.Extensions
             return char.IsUpper(str[0]);
         }
 
+        /// <summary>
+        /// Converts the first character of the string to uppercase.
+        /// </summary>
         public static string Capitalize(this string str)
         {
             if (str.IsNullOrEmpty())
@@ -30,6 +50,9 @@ namespace Bodde.Common.Extensions
             return char.ToUpper(str[0]) + str.Substring(1);
         }
 
+        /// <summary>
+        /// Converts the first character of the string to lowercase.
+        /// </summary>
         public static string Uncapitalize(this string str)
         {
             if (str.IsNullOrEmpty())
@@ -38,6 +61,9 @@ namespace Bodde.Common.Extensions
             return char.ToLower(str[0]) + str.Substring(1);
         }
 
+        /// <summary>
+        /// Returns the plural form of the string.
+        /// </summary>
         public static string Pluralize(this string str)
         {
             if (str.IsNullOrEmpty())
@@ -58,6 +84,9 @@ namespace Bodde.Common.Extensions
         }
 
 
+        /// <summary>
+        /// Converts the string to kebab-case using hyphens as separators.
+        /// </summary>
         public static string Hyphenize(this string str)
         {
             if (str.IsNullOrEmpty())
@@ -75,6 +104,9 @@ namespace Bodde.Common.Extensions
             return sb.Replace(" ", "-").ToString();
         }
 
+        /// <summary>
+        /// Removes hyphens and capitalizes the following character.
+        /// </summary>
         public static string Dehyphenize(this string str)
         {
             if (str.IsNullOrEmpty())

@@ -1,9 +1,8 @@
 namespace Bodde.Common.Extensions.Test.StringExtensions;
 
-public class IsNullOrWhiteSpace
+public class IsEmptyOrWhiteSpace
 {
     [Theory]
-    [InlineData(null, true)]
     [InlineData("", true)]
     [InlineData(" ", true)]
     [InlineData("  ", true)]
@@ -13,7 +12,7 @@ public class IsNullOrWhiteSpace
     [InlineData("x", false)]
     public void Test(string? sut, bool expected)
     {
-        var actual = sut.IsNullOrWhiteSpace();
+        var actual = sut.IsEmptyOrWhiteSpace();
 
         Assert.Equal(expected, actual);
     }
