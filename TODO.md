@@ -7,6 +7,9 @@
 
 # New extensions
 - [x] Tokenize
-- [ ] FromCsv<T>
-- [ ] JsonExtensions (ToJson, FromJson)
-- [ ] FormatExtensions (FormatAsTable)
+- [x] FromCsv<T>
+- [x] FormatExtensions (FormatAsTable)
+- [x] ExpressionExtensions
+- [ ] Add tests and comments where missing
+
+# Update test project references

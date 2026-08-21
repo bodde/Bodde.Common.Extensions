@@ -1,6 +1,4 @@
-﻿using Microsoft.VisualBasic;
-
-namespace Bodde.Common.Extensions.Test.CsvExtensions;
+﻿namespace Bodde.Common.Extensions.Test.CsvExtensions;
 
 public class FromCsv
 {
