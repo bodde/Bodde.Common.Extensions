@@ -1,4 +1,4 @@
-namespace Bodde.Common.Extensions.Test.StringExtensions;
+namespace Bodde.Common.Extensions.Test.Tests.StringExtensions;
 
 public class IsEmpty
 {

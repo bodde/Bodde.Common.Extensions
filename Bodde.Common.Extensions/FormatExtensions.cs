@@ -64,22 +64,27 @@ public static class FormatExtensions
 
     public class FormatTableColumn<T>
     {
-        public FormatTableColumn(Expression<Func<T, object>> columnSelector, string? header = null, Func<object?, string>? valueFormatter = null)
+        private IPropertyAccessor<T, object> propertyAccessor;
+
+        public string Header { get; }
+        public Func<object?, string>? Formatter { get; }
+        public bool RightAlign { get; }
+        public Func<T, object?> GetValue { get; }
+
+        public FormatTableColumn(
+            Expression<Func<T, object>> columnSelector, 
+            string? header = null, 
+            bool? rightAlign = null,
+            Func<object?, string>? formatter = null
+            )
         {
-            Header = header ?? columnSelector.GetPropertyName();
-            ValueSelector = columnSelector.AddTestForNull()!.Compile();
-            ValueFormatter = valueFormatter;
+            propertyAccessor = columnSelector.GetPropertyAccessor();
 
-            var propertyType = columnSelector.GetPropertyType();
-
-            RightAlign = propertyType == typeof(int) || propertyType == typeof(decimal) || propertyType == typeof(double) || propertyType == typeof(float);
+            Header = header ?? propertyAccessor.Path;
+            Formatter = formatter;
+            RightAlign = rightAlign ?? propertyAccessor.Type.IsNumeric();
+            GetValue = propertyAccessor.GetValue;
         }
-
-        public string Header { get; set; }
-        public Func<object?, string>? ValueFormatter { get; set; }
-        public Func<T, object> ValueSelector { get; set; }
-
-        public bool RightAlign { get; set; }
     }
 
     private static int GetMaxColumnLength(string[][] values, int columnIndex)
@@ -98,7 +103,7 @@ public static class FormatExtensions
 
     private static string[] GetRowValues<T>(T item, FormatTableColumn<T>[] columnSelectors)
     {
-        return [.. columnSelectors.Select(col => GetPropertyValue(item, col.ValueSelector, col.ValueFormatter))];
+        return [.. columnSelectors.Select(col => GetPropertyValue(item, col.GetValue, col.Formatter))];
     }
 
     private static string GetPropertyValue<T>(T item, Func<T, object> valueGetter, Func<object?, string>? valueFormatter = null)

@@ -1,7 +1,4 @@
-﻿using System.Text.RegularExpressions;
-using Microsoft.VisualBasic;
-
-namespace Bodde.Common.Extensions.Test.CsvExtensions;
+﻿namespace Bodde.Common.Extensions.Test.Tests.CsvExtensions;
 
 public class FromCsv
 {
