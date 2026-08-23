@@ -1,4 +1,7 @@
-﻿namespace Bodde.Common.Extensions.Test.CsvExtensions;
+﻿using Bodde.Common.Extensions;
+
+namespace CsvExtensions;
+
 
 public class ToCsv
 {

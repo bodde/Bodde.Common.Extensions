@@ -1,4 +1,6 @@
-namespace Bodde.Common.Extensions.Test.StringExtensions;
+using Bodde.Common.Extensions;
+
+namespace StringExtensions;
 
 public class IsNullOrEmpty
 {

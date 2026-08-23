@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using System.Reflection;
 using System.Text;
 
 namespace Bodde.Common.Extensions;
@@ -7,24 +8,26 @@ public static class FormatExtensions
 {
     extension<T>(IEnumerable<T> me)
     {
-        public string FormatAsTable(params FormatTableColumn<T>[] columnSelectors)
+        public string FormatAsTable(params FormatTableColumn<T>[] columns)
         {
-            var columnCount = columnSelectors.Length;
-            if (columnCount == 0)
-                return "Please select at least one column to display";
+            columns = columns.IsEmpty() 
+                ? GetFormatTableColumns<T>()
+                : columns;
+
+            var columnCount = columns.Length;
 
             var rows = me
-                .Select(item => GetRowValues(item, columnSelectors))
+                .Select(item => GetRowValues(item, columns))
                 .ToArray();
 
-            var columnLengths = columnSelectors.Select((col, columnIndex) => Math.Max(col.Header.Length, GetMaxColumnLength(rows, columnIndex))).ToArray();
+            var columnLengths = columns.Select((col, columnIndex) => Math.Max(col.Header.Length, GetMaxColumnLength(rows, columnIndex))).ToArray();
 
             var sb = new StringBuilder();
             var rowLength = 0;
             var spacing = 2;
             for (var colIndex = 0; colIndex < columnCount; colIndex++)
             {
-                var header = columnSelectors[colIndex].Header;
+                var header = columns[colIndex].Header;
                 var columnLengthWithSpacing = columnLengths[colIndex] + spacing;
                 rowLength += columnLengthWithSpacing;
 
@@ -42,17 +45,14 @@ public static class FormatExtensions
                     var value = row[colIndex];
                     var columnLength = columnLengths[colIndex];
 
-                    var rightAlign = columnSelectors[colIndex].RightAlign;
+                    var rightAlign = columns[colIndex].RightAlign;
                     var formattedValue = rightAlign ? value.PadLeft(columnLength) : value.PadRight(columnLength);
 
                     sb.Append(formattedValue);
                     sb.Append(new string(' ', spacing));
                 }
 
-                if (rowIndex < rows.Length - 1)
-                {
-                    sb.AppendLine();
-                }
+                sb.AppendLine();
             }
 
             if (rows.Length == 0)
@@ -62,24 +62,23 @@ public static class FormatExtensions
         }
     }
 
-    public class FormatTableColumn<T>
+    private static FormatTableColumn<T>[] GetFormatTableColumns<T>()
     {
-        public FormatTableColumn(Expression<Func<T, object>> columnSelector, string? header = null, Func<object?, string>? valueFormatter = null)
-        {
-            Header = header ?? columnSelector.GetPropertyName();
-            ValueSelector = columnSelector.AddTestForNull()!.Compile();
-            ValueFormatter = valueFormatter;
+        var type = typeof(T);
+        var propertyInfos = typeof(T).GetPropertyInfos();
+        var parameter = Expression.Parameter(typeof(T), "x");
 
-            var propertyType = columnSelector.GetPropertyType();
+        return propertyInfos
+            .Select(pi => CreateLambdaExpression<T>(pi, parameter))
+            .Select(expr => new FormatTableColumn<T>(expr))
+            .ToArray();
+    }
 
-            RightAlign = propertyType == typeof(int) || propertyType == typeof(decimal) || propertyType == typeof(double) || propertyType == typeof(float);
-        }
+    private static Expression<Func<T, object>> CreateLambdaExpression<T>(PropertyInfo pi, ParameterExpression parameter)
+    {
+        var expression = Expression.Convert(Expression.Property(parameter, pi), typeof(object));
 
-        public string Header { get; set; }
-        public Func<object?, string>? ValueFormatter { get; set; }
-        public Func<T, object> ValueSelector { get; set; }
-
-        public bool RightAlign { get; set; }
+        return Expression.Lambda<Func<T, object>>(expression, parameter);
     }
 
     private static int GetMaxColumnLength(string[][] values, int columnIndex)
@@ -98,10 +97,10 @@ public static class FormatExtensions
 
     private static string[] GetRowValues<T>(T item, FormatTableColumn<T>[] columnSelectors)
     {
-        return [.. columnSelectors.Select(col => GetPropertyValue(item, col.ValueSelector, col.ValueFormatter))];
+        return [.. columnSelectors.Select(col => GetPropertyValue(item, col.GetValue, col.Formatter))];
     }
 
-    private static string GetPropertyValue<T>(T item, Func<T, object> valueGetter, Func<object?, string>? valueFormatter = null)
+    private static string GetPropertyValue<T>(T item, Func<T, object?> valueGetter, Func<object?, string>? valueFormatter = null)
     {
         var value = item == null ? null : valueGetter(item);
         return valueFormatter?.Invoke(value) ?? value?.ToString() ?? "<null>";
