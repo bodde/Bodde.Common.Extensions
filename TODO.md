@@ -21,5 +21,5 @@
     - [x] New methods
 
 # Publish
-- [ ] New tag release
-- [ ] Publish to Nuget
+- [x] New tag release
+- [x] Publish to Nuget
