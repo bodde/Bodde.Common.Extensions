@@ -8,6 +8,11 @@ public static class FormatExtensions
 {
     extension<T>(IEnumerable<T> me)
     {
+        /// <summary>
+        /// Formats the sequence as a text table.
+        /// </summary>
+        /// <param name="columns">The columns to include in the table. When omitted, columns are created from the public properties of the item type.</param>
+        /// <returns>A text representation of the sequence formatted as a table.</returns>
         public string FormatAsTable(params FormatTableColumn<T>[] columns)
         {
             columns = columns.IsEmpty() 
