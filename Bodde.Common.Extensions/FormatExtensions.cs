@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using System.Reflection;
 using System.Text;
 
 namespace Bodde.Common.Extensions;
@@ -7,8 +8,23 @@ public static class FormatExtensions
 {
     extension<T>(IEnumerable<T> me)
     {
+        public FormatTableColumn<T>[] GetColumnSelectors()
+        {
+            var propertyInfos = typeof(T).GetPropertyInfos();
+            var parameter = Expression.Parameter(typeof(T), "x");
+
+            return propertyInfos
+                .Select(pi => CreateLambdaExpression<T>(pi, parameter))
+                .Select(expr => new FormatTableColumn<T>(expr))
+                .ToArray();
+        }
+
         public string FormatAsTable(params FormatTableColumn<T>[] columnSelectors)
         {
+            columnSelectors = columnSelectors.IsEmpty() 
+                ? me.GetColumnSelectors()
+                : columnSelectors;
+
             var columnCount = columnSelectors.Length;
             if (columnCount == 0)
                 return "Please select at least one column to display";
@@ -87,6 +103,14 @@ public static class FormatExtensions
         }
     }
 
+
+    private static Expression<Func<T, object>> CreateLambdaExpression<T>(PropertyInfo pi, ParameterExpression parameter)
+    {
+        var expression = Expression.Convert(Expression.Property(parameter, pi), typeof(object));
+
+        return Expression.Lambda<Func<T, object>>(expression, parameter);
+    }
+
     private static int GetMaxColumnLength(string[][] values, int columnIndex)
     {
         var columnValues = GetColumnValues(values, columnIndex);
@@ -106,7 +130,7 @@ public static class FormatExtensions
         return [.. columnSelectors.Select(col => GetPropertyValue(item, col.GetValue, col.Formatter))];
     }
 
-    private static string GetPropertyValue<T>(T item, Func<T, object> valueGetter, Func<object?, string>? valueFormatter = null)
+    private static string GetPropertyValue<T>(T item, Func<T, object?> valueGetter, Func<object?, string>? valueFormatter = null)
     {
         var value = item == null ? null : valueGetter(item);
         return valueFormatter?.Invoke(value) ?? value?.ToString() ?? "<null>";
