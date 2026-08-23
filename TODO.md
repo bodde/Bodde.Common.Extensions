@@ -19,3 +19,7 @@
     - [ ] No dependencies
     - [ ] Samples.ConsoleApp
     - [ ] New methods
+
+# Publish
+- [ ] New tag release
+- [ ] Publish to Nuget
