@@ -15,10 +15,10 @@
 - [x] Add tests where missing
 - [x] Add comments where missing
 - [x] Add tests for ConsoleApp
-- [ ] Update README
-    - [ ] No dependencies
-    - [ ] Samples.ConsoleApp
-    - [ ] New methods
+- [x] Update README
+    - [x] No dependencies
+    - [x] Samples.ConsoleApp
+    - [x] New methods
 
 # Publish
 - [ ] New tag release
