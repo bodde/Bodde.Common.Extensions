@@ -14,7 +14,7 @@
 - [x] TypeExtensions
 - [x] Add tests where missing
 - [x] Add comments where missing
-- [ ] Add tests for ConsoleApp
+- [x] Add tests for ConsoleApp
 - [ ] Update README
     - [ ] No dependencies
     - [ ] Samples.ConsoleApp
