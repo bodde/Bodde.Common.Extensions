@@ -10,6 +10,8 @@
 - [x] FromCsv<T>
 - [x] FormatExtensions (FormatAsTable)
 - [x] ExpressionExtensions
+- [x] ArrayExtensions
+- [x] TypeExtensions
 - [ ] Add tests and comments where missing
 
 # Update test project references

@@ -8,5 +8,6 @@
         Department Department, 
         Employee? Manager = null
         )
-    {
-    }
+{
+    public override string ToString() => $"{Id} - {Name} {Surname}";
+}
