@@ -1,4 +1,5 @@
 ﻿using Bodde.Common.Extensions;
+using Bodde.Common.Extensions.Test.Models;
 
 namespace CsvExtensions;
 
@@ -90,6 +91,38 @@ public class FromCsv
         var expected = new bool[] { true, false, true };
 
         var actual = sut.FromCsv<bool>(trim: trim, removeEmpty: removeEmpty);
+
+        Assert.Equal(expected, actual);
+    }
+
+
+
+    [Fact]
+    public void ToEmployeeArray()
+    {
+        var engineering = new Department(1, "Engineering");
+        var sut = "John Smith 35; Mario Rossi 23";
+
+        Employee[] expected = [
+            new(1, "John", "Smith", 35, engineering),
+            new(2, "Mario", "Rossi", 23, engineering),
+        ];
+
+        var employeeId = 1;
+        var actual = sut.FromCsv(
+            parser: _ =>
+            {
+                var tokens = _.Tokenize(' ');
+                return new Employee(
+                    Id: employeeId++,
+                    Name: tokens[0],
+                    Surname: tokens[1],
+                    Age: int.Parse(tokens[2]),
+                    Department: engineering
+                    );
+            },
+            separator: ";"
+            );
 
         Assert.Equal(expected, actual);
     }

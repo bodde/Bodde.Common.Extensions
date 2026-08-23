@@ -5,10 +5,21 @@ namespace Bodde.Common.Extensions;
 
 public interface IPropertyAccessor<T, TProperty>
 {
+    /// <summary>
+    /// Gets the dot-separated path of the selected property.
+    /// </summary>
     string Path { get; }
 
+    /// <summary>
+    /// Gets the type of the selected property.
+    /// </summary>
     Type Type { get; }
 
+    /// <summary>
+    /// Gets the selected property value from an instance.
+    /// </summary>
+    /// <param name="instance">The instance from which to retrieve the value.</param>
+    /// <returns>The property value, or the default value when the instance is <see langword="null"/>.</returns>
     TProperty? GetValue(T instance);
 }
 
@@ -24,6 +35,10 @@ internal class PropertyAccessor<T, TProperty>(Expression<Func<T, TProperty>> exp
 
     public TProperty? GetValue(T instance) => instance == null ? default : getter.Value(instance);
 
+    /// <summary>
+    /// Returns the selected property path.
+    /// </summary>
+    /// <returns>The dot-separated property path.</returns>
     public override string ToString() => Path;
 
     private static MemberExpression[] GetPropertyExpressions(Expression<Func<T, TProperty>> expression)

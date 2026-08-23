@@ -50,6 +50,21 @@ public static class CsvExtensions
                 .Select(t => Convert.ChangeType(t, typeof(T)))
                 .Cast<T>()
                 .ToArray();
+
+         /// <summary>
+        /// Converts a CSV-formatted string into an array of values of the specified type.
+        /// </summary>
+        /// <typeparam name="T">The type to which each value should be converted.</typeparam>
+        /// <param name="parser">The function used to convert each string to a value of the specified type.</param>
+        /// <param name="separator">The separator between values.</param>
+        /// <param name="trim">Indicates whether leading and trailing whitespace should be removed from each value.</param>
+        /// <param name="removeEmpty">Indicates whether empty values should be removed from the result.</param>
+        /// <returns>An array containing the converted values.</returns>
+        public T[] FromCsv<T>(Func<string, T> parser, string separator = ",", bool trim = true, bool removeEmpty = false) 
+            => me
+                .FromCsv(separator, trim, removeEmpty)
+                .Select(t => parser(t))
+                .ToArray();
     }
 }
 
