@@ -13,7 +13,7 @@
 - [x] ArrayExtensions
 - [x] TypeExtensions
 - [x] Add tests where missing
-- [ ] Add comments where missing
+- [x] Add comments where missing
 - [ ] Add tests for ConsoleApp
 - [ ] Update README
     - [ ] No dependencies
