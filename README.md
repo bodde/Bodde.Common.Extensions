@@ -41,7 +41,7 @@ using Bodde.Common.Extensions;
 | `string` | [`FromCsv`](#stringfromcsv) | Splits a CSV-formatted string into an array of strings. |
 | `string` | [`FromCsv<T>`](#stringfromcsv-1) | Converts a CSV-formatted string into an array of values implementing `IConvertible`. |
 | `string` | [`FromCsv<T> with parser`](#stringfromcsv-with-parser) | Converts each CSV value with a custom parser function. |
-| `IEnumerable<T>` | [`FormatAsTable`](#ienumerableformatastable) | Formats a sequence as a text table. |
+| `IEnumerable<T>` | [`FormatAsTable<T>`](#ienumerabletformatastablet) | Formats a sequence as a text table. |
 | `string?` | [`IsNullOrEmpty`](#stringisnullorempty) | Determines whether a string is `null` or empty. |
 | `string?` | [`IsNullOrWhiteSpace`](#stringisnullorwhitespace) | Determines whether a string is `null`, empty, or contains only whitespace characters. |
 | `string` | [`IsEmpty`](#stringisempty) | Determines whether a string is empty. |
@@ -163,7 +163,7 @@ Converts each CSV value with a custom parser function.
 var values = "yes,no".FromCsv(value => value == "yes"); // [true, false]
 ```
 
-### IEnumerable<T>.FormatAsTable
+### IEnumerable\<T\>.FormatAsTable\<T\>
 
 Formats a sequence as a text table. When no columns are supplied, public properties of the item type are used automatically.
 
@@ -173,14 +173,49 @@ Formats a sequence as a text table. When no columns are supplied, public propert
 
 **Return type:** `string` - The sequence formatted as a text table.
 
+<br/>
+
+`FormatTableColumn<T>` constructor allows to set the following parameters: 
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `columnSelector` | `Expression<Func<T, object>>` | The expression that selects the column property. |
+| `header` | `string?` | The column header, or the selected property path when omitted. Defaults to `null`. |
+| `rightAlign` | `bool?` | Indicates whether values should be right-aligned. Defaults to automatic alignment based on the property type. |
+| `formatter` | `Func<object?, string>?` | The function used to format column values. Defaults to `null`. |
+
 ```csharp
+record Employee(string Name, string role, int Age);
+
 var employees = new[]
 {
-	new { Name = "John", Age = 35 },
-	new { Name = "Maria", Age = 29 }
+	new Employee("John", "Manager", 35),
+	new Employee("Maria", "Developer", 29)
 };
 
 var table = employees.FormatAsTable();
+/*
+
+Name  Role      Age
+-------------------
+John  Manager    35
+Maria Developer  29
+
+*/
+
+
+var tableWithColumns = employees.FormatAsTable([
+	new(_ => _.Name, "Employee"),
+	new(_ => _.Age, "Age", rightAlign: true)
+]);
+/*
+
+Employee  Age
+-------------
+John       35
+Maria      29
+
+*/
 ```
 
 ### string?.IsNullOrEmpty
