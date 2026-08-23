@@ -1,7 +1,8 @@
+using Bodde.Common.Extensions;
 using Bodde.Common.Extensions.Test.Models;
 using Microsoft.VisualStudio.TestPlatform.ObjectModel.Utilities;
 
-namespace Bodde.Common.Extensions.Test.Tests.PropertyAccessor;
+namespace PropertyAccessor;
 
 public class Path
 {

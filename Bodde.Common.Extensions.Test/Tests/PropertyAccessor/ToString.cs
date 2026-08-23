@@ -1,6 +1,7 @@
+using Bodde.Common.Extensions;
 using Bodde.Common.Extensions.Test.Models;
 
-namespace Bodde.Common.Extensions.Test.Tests.PropertyAccessor;
+namespace PropertyAccessor;
 
 public class ToString
 {

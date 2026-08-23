@@ -1,4 +1,6 @@
-﻿namespace Bodde.Common.Extensions.Test.Tests.CsvExtensions;
+﻿using Bodde.Common.Extensions;
+
+namespace CsvExtensions;
 
 public class FromCsv
 {

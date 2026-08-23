@@ -1,56 +1,21 @@
-namespace Bodde.Common.Extensions.Test.Tests.StringExtensions;
+namespace TypeExtensions;
 
 public class IsNullable
 {
-    [Fact]
-    public void Int32_False()
+
+    [Theory]
+    [InlineData("System.Int32", false)]
+    [InlineData("System.Nullable`1[System.Int32]", true)]
+    [InlineData("System.String", true)]
+    [InlineData("System.Int32[]", true)]
+    [InlineData("System.DateTime", false)]
+    [InlineData("Bodde.Common.Extensions.Test.Models.Employee", true)]
+    public void Test(string typeName, bool expected)
     {
-        var sut = typeof(int);
+        var sut = Type.GetType(typeName)!;
 
         var actual = sut.IsNullable();
 
-        Assert.False(actual);
-    }
-
-    [Fact]
-    public void NullableInt32_True()
-    {
-        var sut = typeof(int?);
-
-        var actual = sut.IsNullable();
-
-        Assert.True(actual);
-    }
-
-    [Fact]
-    public void String_True()
-    {
-        var sut = typeof(string);
-
-        var actual = sut.IsNullable();
-
-        Assert.True(actual);
-    }
-
-
-    [Fact]
-    public void ArrayInt32_True()
-    {
-        var sut = typeof(int[]);
-
-        var actual = sut.IsNullable();
-
-        Assert.True(actual);
-    }
-
-
-    [Fact]
-    public void DateTime_False()
-    {
-        var sut = typeof(DateTime);
-
-        var actual = sut.IsNullable();
-
-        Assert.False(actual);
+        Assert.Equal(expected, actual);
     }
 }

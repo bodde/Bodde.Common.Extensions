@@ -12,14 +12,15 @@ public static class TypeExtensions
 
     private static readonly Type[] NumericTypes = [
         typeof(sbyte),
-            typeof(byte),
-            typeof(short),
-            typeof(ushort),
-            typeof(int),
-            typeof(uint),
-            typeof(ulong),
-            typeof(float),
-            typeof(double),
-            typeof(decimal)
+        typeof(byte),
+        typeof(short),
+        typeof(ushort),
+        typeof(int),
+        typeof(uint),
+        typeof(long),
+        typeof(ulong),
+        typeof(float),
+        typeof(double),
+        typeof(decimal)
     ];
 }

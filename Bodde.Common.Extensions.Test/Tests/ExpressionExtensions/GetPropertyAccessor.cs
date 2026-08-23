@@ -1,7 +1,8 @@
+using Bodde.Common.Extensions;
 using Bodde.Common.Extensions.Test.Helpers;
 using Bodde.Common.Extensions.Test.Models;
 
-namespace Bodde.Common.Extensions.Test.Tests.ExpressionExtensions;
+namespace ExpressionExtensions;
 
 public class GetPropertyAccessor
 {

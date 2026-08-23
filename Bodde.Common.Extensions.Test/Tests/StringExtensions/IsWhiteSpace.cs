@@ -1,4 +1,6 @@
-namespace Bodde.Common.Extensions.Test.Tests.StringExtensions;
+using Bodde.Common.Extensions;
+
+namespace StringExtensions;
 
 public class IsEmptyOrWhiteSpace
 {
