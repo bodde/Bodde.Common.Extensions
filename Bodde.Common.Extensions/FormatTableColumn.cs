@@ -4,7 +4,7 @@ namespace Bodde.Common.Extensions;
 
 public class FormatTableColumn<T>
 {
-    private IPropertyAccessor<T, object> propertyAccessor;
+    private PropertyAccessor<T, object> propertyAccessor;
 
     internal string Header { get; }
     internal Func<object?, string>? Formatter { get; }
@@ -25,7 +25,7 @@ public class FormatTableColumn<T>
         Func<object?, string>? formatter = null
         )
     {
-        propertyAccessor = columnSelector.GetPropertyAccessor();
+        propertyAccessor = new PropertyAccessor<T, object>(columnSelector);
 
         Header = header ?? propertyAccessor.Path;
         Formatter = formatter;

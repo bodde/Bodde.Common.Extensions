@@ -2,32 +2,10 @@ using System.Linq.Expressions;
 
 namespace Bodde.Common.Extensions;
 
-
-public interface IPropertyAccessor<T, TProperty>
-{
-    /// <summary>
-    /// Gets the dot-separated path of the selected property.
-    /// </summary>
-    string Path { get; }
-
-    /// <summary>
-    /// Gets the type of the selected property.
-    /// </summary>
-    Type Type { get; }
-
-    /// <summary>
-    /// Gets the selected property value from an instance.
-    /// </summary>
-    /// <param name="instance">The instance from which to retrieve the value.</param>
-    /// <returns>The property value, or the default value when the instance is <see langword="null"/>.</returns>
-    TProperty? GetValue(T instance);
-}
-
-internal class PropertyAccessor<T, TProperty>(Expression<Func<T, TProperty>> expression) : IPropertyAccessor<T, TProperty>
+internal class PropertyAccessor<T, TProperty>(Expression<Func<T, TProperty>> expression)
 {
     private readonly Lazy<MemberExpression[]> memberExpressions = new(() => GetPropertyExpressions(expression));
-    private readonly Lazy<Func<T, TProperty>> getter = new(() => AddTestForNull(expression).Compile())
-;
+    private readonly Lazy<Func<T, TProperty>> getter = new(() => AddTestForNull(expression).Compile());
 
     public string Path => memberExpressions.Value.ToCsv(me => me.Member.Name, ".");
 
