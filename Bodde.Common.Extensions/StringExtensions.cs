@@ -137,7 +137,7 @@ public static class StringExtensions
         /// <param name="trim">Indicates whether leading and trailing whitespace should be removed from each token.</param>
         /// <param name="removeEmpty">Indicates whether empty tokens should be removed from the result.</param>
         /// <returns>An array containing the tokens extracted from the string.</returns>
-        public string[] Tokenize(char separator, bool trim = true, bool removeEmpty = true)
+        public string[] Tokenize(char separator, bool trim = false, bool removeEmpty = false)
             => ProcessTokens(me.Split(separator), trim, removeEmpty);
 
         /// <summary>
@@ -147,7 +147,7 @@ public static class StringExtensions
         /// <param name="trim">Indicates whether leading and trailing whitespace should be removed from each token.</param>
         /// <param name="removeEmpty">Indicates whether empty tokens should be removed from the result.</param>
         /// <returns>An array containing the tokens extracted from the string.</returns>
-        public string[] Tokenize(string separator, bool trim = true, bool removeEmpty = true)
+        public string[] Tokenize(string separator, bool trim = false, bool removeEmpty = false)
         {
             if (separator.IsEmpty())
                 throw new ArgumentOutOfRangeException(nameof(separator), "Empty separators are invalid.");
