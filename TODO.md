@@ -12,6 +12,10 @@
 - [x] ExpressionExtensions
 - [x] ArrayExtensions
 - [x] TypeExtensions
-- [ ] Add tests and comments where missing
-
-# Update test project references
+- [x] Add tests where missing
+- [ ] Add comments where missing
+- [ ] Add tests for ConsoleApp
+- [ ] Update README
+    - [ ] No dependencies
+    - [ ] Samples.ConsoleApp
+    - [ ] New methods
