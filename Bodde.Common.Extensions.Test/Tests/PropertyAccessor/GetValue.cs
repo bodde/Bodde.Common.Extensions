@@ -52,12 +52,36 @@ public class GetValue
     public void Untyped_EmployeeManagerManagerName()
     {
         var sut = new PropertyAccessor<Employee, object>(_ => _.Manager!.Manager!.Name);
+        var employee = CreateEmployee();
+
+        var actual = sut.GetValue(employee);
+
+        Assert.Null(actual);
+    }   
+
+       [Fact]
+    public void Untyped_ManagerManagerName()
+    {
+        var sut = new PropertyAccessor<Employee, object>(_ => _.Manager!.Name);
         var employee = CreateManager();
 
         var actual = sut.GetValue(employee);
 
-        Assert.Equal(employee.Manager?.Manager?.Name, actual);
+        Assert.Null(actual);
     }   
+
+
+       [Fact]
+    public void Untyped_ManagerManagerManagerName()
+    {
+        var sut = new PropertyAccessor<Employee, object>(_ => _.Manager!.Manager!.Name);
+        var employee = CreateManager();
+
+        var actual = sut.GetValue(employee);
+
+        Assert.Null(actual);
+    }   
+
 
     private static Employee CreateManager()
     {

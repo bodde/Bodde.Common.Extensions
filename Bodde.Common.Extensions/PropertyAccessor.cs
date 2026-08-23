@@ -14,7 +14,6 @@ public interface IPropertyAccessor<T, TProperty>
 
 internal class PropertyAccessor<T, TProperty>(Expression<Func<T, TProperty>> expression) : IPropertyAccessor<T, TProperty>
 {
-    private readonly Expression<Func<T, TProperty>> expression = expression;
     private readonly Lazy<MemberExpression[]> memberExpressions = new(() => GetPropertyExpressions(expression));
     private readonly Lazy<Func<T, TProperty>> getter = new(() => AddTestForNull(expression).Compile())
 ;
@@ -70,16 +69,19 @@ internal class PropertyAccessor<T, TProperty>(Expression<Func<T, TProperty>> exp
     /// </summary>
     private class NullTestVisitor : ExpressionVisitor
     {
-        public override Expression? Visit(Expression? node)
+        protected override Expression VisitMember(MemberExpression node)
         {
-            if (node is MemberExpression nme && nme.Expression != null && nme.Type.IsNullable())
-            {
-                var nullTestExpression = Expression.MakeBinary(ExpressionType.Equal, nme.Expression, Expression.Constant(null, nme.Expression.Type));
+            var expression = Visit(node.Expression);
+            var member = node.Update(expression);
 
-                return Expression.Condition(nullTestExpression, Expression.Constant(null, nme.Type), nme);
+            if (expression != null && node.Type.IsNullable())
+            {
+                var nullTestExpression = Expression.MakeBinary(ExpressionType.Equal, expression, Expression.Constant(null, expression.Type));
+
+                return Expression.Condition(nullTestExpression, Expression.Constant(null, node.Type), member);
             }
 
-            return base.Visit(node);
+            return member;
         }
     }
 }
