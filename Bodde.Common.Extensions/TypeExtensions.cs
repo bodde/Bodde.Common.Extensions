@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Concurrent;
 using System.Reflection;
 
@@ -22,6 +23,13 @@ public static class TypeExtensions
 
             return NumericTypes.Contains(nonNullableType);
         }
+
+        /// <summary>
+        /// Determines whether the type represents a collection, excluding <see cref="string"/>.
+        /// </summary>
+        /// <returns><see langword="true"/> if the type implements <see cref="IEnumerable"/> and is not a string; otherwise, <see langword="false"/>.</returns>
+        public bool IsCollection()
+            => type != typeof(string) && typeof(IEnumerable).IsAssignableFrom(type);
 
         /// <summary>
         /// Gets the properties that match the specified binding flags.

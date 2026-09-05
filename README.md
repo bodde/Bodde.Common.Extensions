@@ -61,6 +61,7 @@ using Bodde.Common.Extensions;
 | `string` | [`Tokenize by string`](#stringtokenize-by-string) | Splits a string into tokens using a string separator. |
 | `Type` | [`IsNullable`](#typeisnullable) | Determines whether a type can contain a null value. |
 | `Type` | [`IsNumeric`](#typeisnumeric) | Determines whether a type is one of the supported numeric types. |
+| `Type` | [`IsCollection`](#typeiscollection) | Determines whether a type represents a collection, excluding `string`. |
 | `Type` | [`GetPropertyInfos`](#typegetpropertyinfos) | Gets the properties matching the specified reflection binding flags. |
 | `Type` | [`GetPropertyNames`](#typegetpropertynames) | Gets the names of properties matching the specified reflection binding flags. |
 
@@ -430,6 +431,17 @@ Determines whether a type is one of the supported numeric types, including nulla
 
 ```csharp
 var result = typeof(decimal).IsNumeric(); // true
+```
+
+### Type.IsCollection
+
+Determines whether a type represents a collection by checking whether it implements `IEnumerable`. Strings are excluded from the result.
+
+**Return type:** `bool` - `true` when the type implements `IEnumerable` and is not `string`; otherwise, `false`.
+
+```csharp
+var arrayResult = typeof(int[]).IsCollection(); // true
+var stringResult = typeof(string).IsCollection(); // false
 ```
 
 ### Type.GetPropertyInfos

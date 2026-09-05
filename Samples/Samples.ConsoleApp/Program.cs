@@ -163,7 +163,12 @@ static void TypeExamples()
     Console.WriteLine("Type Examples");
     Console.WriteLine("------------------------------------------------------------------------------");
 
+    Console.WriteLine($"typeof(Employee).IsCollection() => {typeof(Employee).IsCollection().Display()}"); // false
+    Console.WriteLine($"typeof(string).IsCollection() => {typeof(string).IsCollection().Display()}"); // false
+    Console.WriteLine($"typeof(int[]).IsCollection() => {typeof(int[]).IsCollection().Display()}"); // true
+
     Console.WriteLine($"typeof(Employee).GetPropertyNames() => {typeof(Employee).GetPropertyNames().Display()}");
+
     Console.WriteLine($"typeof(Employee).GetPropertyInfos() => {typeof(Employee).GetPropertyInfos().Display()}");
 }
 
