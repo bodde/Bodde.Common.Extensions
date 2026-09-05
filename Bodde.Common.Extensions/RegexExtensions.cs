@@ -11,7 +11,7 @@ public static class RegexExtensions
             var namedGroups = GetNamedGroups(matches, groupName);
 
             return namedGroups
-                .Select(group => group.Value)
+                .Select(namedGroup => namedGroup.Group.Value)
                 .ToArray();
         }
 
@@ -19,12 +19,15 @@ public static class RegexExtensions
         {
             var matches = regex.Matches(input);
 
-            var valuesByGroup = groupNames
+            var namedGroups = groupNames
                 .SelectMany(groupName => GetNamedGroups(matches, groupName))
-                .GroupBy(group => group.ToString())
+                .ToArray();
+
+            var valuesByGroup = namedGroups
+                .GroupBy(namedGroup => namedGroup.Name)
                 .ToDictionary(
                     groupsByName => groupsByName.Key, 
-                    groupsByName => groupsByName.Select(g => g.Value).ToArray()
+                    groupsByName => groupsByName.Select(namedGroup => namedGroup.Group.Value).ToArray()
                     );
 
             return valuesByGroup;
@@ -35,7 +38,8 @@ public static class RegexExtensions
         {
             pickOne ??= values => values.FirstOrDefault();
 
-            var propertyInfos = typeof(T).GetPropertyInfos(flags: BindingFlags.Public | BindingFlags.Instance | BindingFlags.SetField);
+            var setProperties = BindingFlags.Public | BindingFlags.Instance | BindingFlags.SetProperty;
+            var propertyInfos = typeof(T).GetPropertyInfos(flags: setProperties);
             var propertyNames = propertyInfos.Select(pi => pi.Name).ToArray();
 
             var matchingGroupValues = regex.MatchingGroupsValues(input, propertyNames);
@@ -58,12 +62,14 @@ public static class RegexExtensions
         }
     }
 
-    private static Group[] GetNamedGroups(MatchCollection matchCollection, string groupName)
+    private static NamedGroup[] GetNamedGroups(MatchCollection matchCollection, string groupName)
     {
         return matchCollection
             .Cast<Match>()
-            .SelectMany(m => m.Groups.Cast<Group>())
-            .Where(g => g.ToString() == groupName)
+            .Select(match => new NamedGroup(groupName, match.Groups[groupName]))
+            .Where(namedGroup => namedGroup.Group.Success)
             .ToArray();
     }
+
+    private record NamedGroup(string Name, Group Group);
 }
