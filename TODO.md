@@ -1,5 +1,5 @@
 # New Extensions
-- [ ] string? - OrEmpty
+- [x] string? - OrEmpty
 - [ ] string? - IsNotEmpty
 - [x] add NotNullWhen(false) attribute for IsNullOrEmpty and IsNullOrWhiteSpace
 - [ ] Type - IsCollection ((valueType.GetElementType() ?? valueType.GetGenericArguments().FirstOrDefault()) != null)
