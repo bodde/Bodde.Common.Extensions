@@ -9,7 +9,7 @@
     <!-- NuGet configuration -->
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageId>Bodde.Common.Extensions</PackageId>
-    <Version>1.1.0</Version>
+    <Version>1.2.0</Version>
     <Authors>Bodde</Authors>
 
     <!-- Useful metadata -->
