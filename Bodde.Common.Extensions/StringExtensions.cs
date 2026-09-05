@@ -18,6 +18,19 @@ public static class StringExtensions
         public bool IsNullOrWhiteSpace() => string.IsNullOrWhiteSpace(me);
     }
 
+    extension([NotNullWhen(true)]string? me)
+    {
+        /// <summary>
+        /// Determines whether a string is not null and not empty.
+        /// </summary>
+        public bool IsNotNullOrEmpty() => string.IsNullOrEmpty(me) == false;
+
+        /// <summary>
+        /// Determines whether a string is not null and contains at least one non-whitespace character.
+        /// </summary>
+        public bool IsNotNullOrWhiteSpace() => string.IsNullOrWhiteSpace(me) == false;
+    }
+
     extension(string? me)
     {
         /// <summary>

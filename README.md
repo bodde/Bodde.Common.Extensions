@@ -44,6 +44,8 @@ using Bodde.Common.Extensions;
 | `IEnumerable<T>` | [`FormatAsTable<T>`](#ienumerabletformatastablet) | Formats a sequence as a text table. |
 | `string?` | [`IsNullOrEmpty`](#stringisnullorempty) | Determines whether a string is `null` or empty. |
 | `string?` | [`IsNullOrWhiteSpace`](#stringisnullorwhitespace) | Determines whether a string is `null`, empty, or contains only whitespace characters. |
+| `string?` | [`IsNotNullOrEmpty`](#stringisnotnullorempty) | Determines whether a string is not `null` and not empty. |
+| `string?` | [`IsNotNullOrWhiteSpace`](#stringisnotnullorwhitespace) | Determines whether a string is not `null` and contains at least one non-whitespace character. |
 | `string?` | [`OrEmpty`](#stringorempty) | Returns an empty string when the value is `null`; otherwise, returns the original string. |
 | `string` | [`IsEmpty`](#stringisempty) | Determines whether a string is empty. |
 | `string` | [`IsEmptyOrWhiteSpace`](#stringisemptyorwhitespace) | Determines whether a string is empty or contains only whitespace characters. |
@@ -238,6 +240,28 @@ Determines whether a string is `null`, empty, or contains only whitespace charac
 
 ```csharp
 var result = "  \t".IsNullOrWhiteSpace(); // true
+```
+
+### string?.IsNotNullOrEmpty
+
+Determines whether a string is not `null` and not empty.
+
+**Return type:** `bool` - `true` when the string is not `null` and not empty; otherwise, `false`.
+
+```csharp
+string? value = "Hello";
+var result = value.IsNotNullOrEmpty(); // true
+```
+
+### string?.IsNotNullOrWhiteSpace
+
+Determines whether a string is not `null` and contains at least one non-whitespace character.
+
+**Return type:** `bool` - `true` when the string is not `null` and contains at least one non-whitespace character; otherwise, `false`.
+
+```csharp
+string? value = "Hello";
+var result = value.IsNotNullOrWhiteSpace(); // true
 ```
 
 ### string?.OrEmpty

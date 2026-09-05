@@ -1,17 +1,17 @@
 ﻿
 using Bodde.Common.Extensions;
 
-StringSamples();
-ToCsvSamples();
-FromCsvSamples();
-ArraySamples();
-TypeSamples();
-FormatSamples();
+StringExamples();
+ToCsvExamples();
+FromCsvExamples();
+ArrayExamples();
+TypeExamples();
+FormatExamples();
 
-static void StringSamples()
+static void StringExamples()
 {
     Console.WriteLine();
-    Console.WriteLine("String Samples");
+    Console.WriteLine("String Examples");
     Console.WriteLine("------------------------------------------------------------------------------");
 
     Console.WriteLine($"((string?)null).IsNullOrEmpty() => {((string?)null).IsNullOrEmpty()}"); // true
@@ -23,6 +23,12 @@ static void StringSamples()
     Console.WriteLine($"{value.Display()}.IsEmpty => {value.IsEmpty()}"); // true
 
     Console.WriteLine($"((string?)null).OrEmpty() => {((string?)null).OrEmpty().Display()}"); // ""
+
+    value = "Hello";
+    Console.WriteLine($"{value.Display()}.IsNotNullOrEmpty() => {value.IsNotNullOrEmpty()}"); // true
+
+    value = "Hello";
+    Console.WriteLine($"{value.Display()}.IsNotNullOrWhiteSpace() => {value.IsNotNullOrWhiteSpace()}"); // true
 
     value = "Hello";
     Console.WriteLine($"{value.Display()}.IsCapitalized() => {value.IsCapitalized()}"); // true
@@ -71,10 +77,10 @@ static void StringSamples()
 
 }
 
-static void ToCsvSamples()
+static void ToCsvExamples()
 {
     Console.WriteLine();
-    Console.WriteLine("ToCsv Samples");
+    Console.WriteLine("ToCsv Examples");
     Console.WriteLine("------------------------------------------------------------------------------");
 
     string[] values = ["A", "B", "C"];
@@ -96,10 +102,10 @@ static void ToCsvSamples()
     Console.WriteLine($"<employees>.ToCsv(formatter: e => $\"{{e.Surname}}, {{e.Name}} {{e.Age}})\", separator: \"; \") => {csv3.Display()}"); // "Smith, John (35); Rossi, Mario (23)"
 }
 
-static void FromCsvSamples()
+static void FromCsvExamples()
 {
     Console.WriteLine();
-    Console.WriteLine("FromCsv Samples");
+    Console.WriteLine("FromCsv Examples");
     Console.WriteLine("------------------------------------------------------------------------------");
 
     string input1 = "A, B, C";
@@ -124,10 +130,10 @@ static void FromCsvSamples()
     Console.WriteLine($"{input7.Display()}.FromCsv(separator: \"|\") => {input7.FromCsv(separator: "|").Display()}"); // ["A", "B", "C"]
 }
 
-static void ArraySamples()
+static void ArrayExamples()
 {
     Console.WriteLine();
-    Console.WriteLine("Array Samples");
+    Console.WriteLine("Array Examples");
     Console.WriteLine("------------------------------------------------------------------------------");
 
     string[] emptyValues = [];
@@ -142,20 +148,20 @@ static void ArraySamples()
     Console.WriteLine($"{values.Display()}.OrEmpty() => {values.OrEmpty().Display()}"); // [1, 2, 3]
 }
 
-static void TypeSamples()
+static void TypeExamples()
 {
     Console.WriteLine();
-    Console.WriteLine("Type Samples");
+    Console.WriteLine("Type Examples");
     Console.WriteLine("------------------------------------------------------------------------------");
 
     Console.WriteLine($"typeof(Employee).GetPropertyNames() => {typeof(Employee).GetPropertyNames().Display()}");
     Console.WriteLine($"typeof(Employee).GetPropertyInfos() => {typeof(Employee).GetPropertyInfos().Display()}");
 }
 
-static void FormatSamples()
+static void FormatExamples()
 {
     Console.WriteLine();
-    Console.WriteLine("Format Samples");
+    Console.WriteLine("Format Examples");
     Console.WriteLine("------------------------------------------------------------------------------");
 
     var engineering = new Department(1, "Engineering");
