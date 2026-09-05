@@ -44,6 +44,7 @@ using Bodde.Common.Extensions;
 | `IEnumerable<T>` | [`FormatAsTable<T>`](#ienumerabletformatastablet) | Formats a sequence as a text table. |
 | `string?` | [`IsNullOrEmpty`](#stringisnullorempty) | Determines whether a string is `null` or empty. |
 | `string?` | [`IsNullOrWhiteSpace`](#stringisnullorwhitespace) | Determines whether a string is `null`, empty, or contains only whitespace characters. |
+| `string?` | [`OrEmpty`](#stringorempty) | Returns an empty string when the value is `null`; otherwise, returns the original string. |
 | `string` | [`IsEmpty`](#stringisempty) | Determines whether a string is empty. |
 | `string` | [`IsEmptyOrWhiteSpace`](#stringisemptyorwhitespace) | Determines whether a string is empty or contains only whitespace characters. |
 | `string` | [`IsCapitalized`](#stringiscapitalized) | Determines whether the first character of a string is uppercase. |
@@ -237,6 +238,17 @@ Determines whether a string is `null`, empty, or contains only whitespace charac
 
 ```csharp
 var result = "  \t".IsNullOrWhiteSpace(); // true
+```
+
+### string?.OrEmpty
+
+Returns an empty string when the value is `null`; otherwise, returns the original string.
+
+**Return type:** `string` - `string.Empty` when the value is `null`; otherwise, the original string.
+
+```csharp
+string? value = null;
+var result = value.OrEmpty(); // ""
 ```
 
 ### string.IsEmpty

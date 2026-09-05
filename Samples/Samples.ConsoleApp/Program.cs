@@ -22,6 +22,8 @@ static void StringSamples()
     value = "";
     Console.WriteLine($"{value.Display()}.IsEmpty => {value.IsEmpty()}"); // true
 
+    Console.WriteLine($"((string?)null).OrEmpty() => {((string?)null).OrEmpty().Display()}"); // ""
+
     value = "Hello";
     Console.WriteLine($"{value.Display()}.IsCapitalized() => {value.IsCapitalized()}"); // true
 

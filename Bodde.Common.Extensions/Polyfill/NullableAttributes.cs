@@ -2,6 +2,7 @@
 
 namespace System.Diagnostics.CodeAnalysis;
 
+[ExcludeFromCodeCoverage]
 [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false)]
 public sealed class NotNullWhenAttribute(bool returnValue) : Attribute
 {

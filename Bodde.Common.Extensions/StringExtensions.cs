@@ -18,6 +18,14 @@ public static class StringExtensions
         public bool IsNullOrWhiteSpace() => string.IsNullOrWhiteSpace(me);
     }
 
+    extension(string? me)
+    {
+        /// <summary>
+        /// Returns an empty string if the string is null; otherwise, returns the original string.
+        /// </summary>
+        public string OrEmpty() => me.IsNullOrEmpty() ? string.Empty : me;
+    }
+
     extension(string me)
     {
         /// <summary>
