@@ -136,13 +136,22 @@ static void ArrayExamples()
     Console.WriteLine("Array Examples");
     Console.WriteLine("------------------------------------------------------------------------------");
 
+    string[]? nullValues = null;
     string[] emptyValues = [];
+    int[] values = [1, 2, 3];
+
+    Console.WriteLine($"((string[])null).IsNullOrEmpty() => {nullValues.IsNullOrEmpty()}"); // true
+    Console.WriteLine($"{emptyValues.Display()}.IsNullOrEmpty() => {emptyValues.IsNullOrEmpty()}"); // true
+    Console.WriteLine($"{values.Display()}.IsNullOrEmpty() => {values.IsNullOrEmpty()}"); // false
+
+    Console.WriteLine($"((string[])null).IsNullOrEmpty() => {nullValues.IsNotNullOrEmpty()}"); // false
+    Console.WriteLine($"{emptyValues.Display()}.IsNotNullOrEmpty() => {emptyValues.IsNotNullOrEmpty()}"); // false 
+    Console.WriteLine($"{values.Display()}.IsNotNullOrEmpty() => {values.IsNotNullOrEmpty()}"); // true
+
     Console.WriteLine($"{emptyValues.Display()}.IsEmpty() => {emptyValues.IsEmpty()}"); // true
 
-    int[] values = [1, 2, 3];
     Console.WriteLine($"{values.Display()}.IsEmpty() => {values.IsEmpty()}"); // false
 
-    string[]? nullValues = null;
     Console.WriteLine($"((string[])null).OrEmpty() => {nullValues.OrEmpty().Display()}"); // []
 
     Console.WriteLine($"{values.Display()}.OrEmpty() => {values.OrEmpty().Display()}"); // [1, 2, 3]

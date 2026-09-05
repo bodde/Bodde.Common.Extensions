@@ -34,8 +34,10 @@ using Bodde.Common.Extensions;
 
 | Class | Method | Description |
 | --- | --- | --- |
-| `T[]` | [`IsEmpty<T>`](#tisemptyt) | Determines whether an array contains no elements. |
+| `T[]?` | [`IsNullOrEmpty<T>`](#tisnulloremptyt) | Determines whether an array is `null` or contains no elements. |
+| `T[]?` | [`IsNotNullOrEmpty<T>`](#tisnotnulloremptyt) | Determines whether an array is not `null` and contains at least one element. |
 | `T[]?` | [`OrEmpty<T>`](#toremptyt) | Returns the original array, or an empty array when the value is `null`. |
+| `T[]` | [`IsEmpty<T>`](#tisemptyt) | Determines whether an array contains no elements. |
 | `IEnumerable<T>` | [`ToCsv<T>`](#ienumerablettocsvt) | Converts a sequence of values to a CSV-formatted string. |
 | `IEnumerable<T>` | [`ToCsv<T> with formatter`](#ienumerablettocsvt-with-formatter) | Converts a sequence to CSV using a custom function to format each value. |
 | `string` | [`FromCsv`](#stringfromcsv) | Splits a CSV-formatted string into an array of strings. |
@@ -62,15 +64,26 @@ using Bodde.Common.Extensions;
 | `Type` | [`GetPropertyInfos`](#typegetpropertyinfos) | Gets the properties matching the specified reflection binding flags. |
 | `Type` | [`GetPropertyNames`](#typegetpropertynames) | Gets the names of properties matching the specified reflection binding flags. |
 
-### T[].IsEmpty\<T\>
+### T[]?.IsNullOrEmpty\<T\>
 
-Determines whether an array contains no elements.
+Determines whether an array is `null` or contains no elements.
 
-**Return type:** `bool` - `true` when the array is empty; otherwise, `false`.
+**Return type:** `bool` - `true` when the array is `null` or empty; otherwise, `false`.
 
 ```csharp
-var values = Array.Empty<int>();
-var isEmpty = values.IsEmpty(); // true
+int[]? values = null;
+var isNullOrEmpty = values.IsNullOrEmpty(); // true
+```
+
+### T[]?.IsNotNullOrEmpty\<T\>
+
+Determines whether an array is not `null` and contains at least one element.
+
+**Return type:** `bool` - `true` when the array is not `null` and not empty; otherwise, `false`.
+
+```csharp
+int[]? values = [1, 2, 3];
+var hasValues = values.IsNotNullOrEmpty(); // true
 ```
 
 ### T[]?.OrEmpty\<T\>
@@ -82,6 +95,17 @@ Returns the original array, or an empty array when the value is `null`.
 ```csharp
 int[]? values = null;
 var safeValues = values.OrEmpty(); // []
+```
+
+### T[].IsEmpty\<T\>
+
+Determines whether an array contains no elements.
+
+**Return type:** `bool` - `true` when the array is empty; otherwise, `false`.
+
+```csharp
+var values = Array.Empty<int>();
+var isEmpty = values.IsEmpty(); // true
 ```
 
 ### IEnumerable\<T\>.ToCsv\<T\>
