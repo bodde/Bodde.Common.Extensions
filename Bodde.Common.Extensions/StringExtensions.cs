@@ -1,10 +1,11 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 namespace Bodde.Common.Extensions;
 
 public static class StringExtensions
 {
-    extension(string? me)
+    extension([NotNullWhen(false)]string? me)
     {
         /// <summary>
         /// Determines whether the string is null or empty.
