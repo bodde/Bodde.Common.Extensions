@@ -59,7 +59,9 @@ using Bodde.Common.Extensions;
 | `string` | [`Dehyphenize`](#stringdehyphenize) | Removes hyphens and capitalizes the character following each hyphen. |
 | `string` | [`Tokenize by character`](#stringtokenize-by-character) | Splits a string into tokens using a character separator. |
 | `string` | [`Tokenize by string`](#stringtokenize-by-string) | Splits a string into tokens using a string separator. |
+| `Regex` | [`GetValues`](#regexgetvalues) | Gets the matched text for every match in the input string. |
 | `Regex` | [`GetGroupValues`](#regexgetgroupvalues) | Gets all successful captures for a named group across every match in the input text. |
+| `MatchCollection` | [`GetValues`](#matchcollectiongetvalues) | Gets the matched text for each regular expression match. |
 | `MatchCollection` | [`GetGroupValues`](#matchcollectiongetgroupvalues) | Gets all successful captures for a named group from a collection of matches. |
 | `Type` | [`IsNullable`](#typeisnullable) | Determines whether a type can contain a null value. |
 | `Type` | [`IsNumeric`](#typeisnumeric) | Determines whether a type is one of the supported numeric types. |
@@ -415,6 +417,22 @@ Splits a string into tokens using a string separator. An empty separator throws 
 var values = "A<->B<->C".Tokenize("<->"); // ["A", "B", "C"]
 ```
 
+### Regex.GetValues
+
+Gets the matched text for every match in the input string.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| `input` | `string` | Required | The input text to search. |
+
+**Return type:** `string[]` - The matched text for each regular expression match.
+
+```csharp
+var regex = new Regex(@"(\w+)");
+var values = regex.GetValues("Call me Sarah");
+// ["Call", "me", "Sarah"]
+```
+
 ### Regex.GetGroupValues
 
 Gets all successful captures for the specified named group across every match in the input text.
@@ -432,6 +450,18 @@ var input = "Call me Sarah, don't call me Sally!";
 
 var values = new Regex(pattern).GetGroupValues(input, "name");
 // ["Sarah", "Sally"]
+```
+
+### MatchCollection.GetValues
+
+Gets the matched text for each regular expression match.
+
+**Return type:** `string[]` - The matched text for each match.
+
+```csharp
+var matches = new Regex(@"(\w+)").Matches("Call me Sarah");
+var values = matches.GetValues();
+// ["Call", "me", "Sarah"]
 ```
 
 ### MatchCollection.GetGroupValues

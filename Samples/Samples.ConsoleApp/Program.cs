@@ -181,8 +181,24 @@ static void RegexExamples()
     Console.WriteLine("Regex Examples");
     Console.WriteLine("------------------------------------------------------------------------------");
 
-    DisplayRegexExample(
+    RegexGetValuesExample(
         regexName: "regex1",
+        pattern: @"[Cc]all me (\w+)", 
+        text: "Call me Sarah, don't call me Sally!"
+        );
+    
+    Console.WriteLine();
+
+    MatchCollectionGetValuesExample(
+        regexName: "regex2",
+        pattern: @"(\w+)", 
+        text: "Call me Sally."
+        );
+    
+    Console.WriteLine();
+
+    RegexGetGroupValuesExample(
+        regexName: "regex3",
         pattern: @"(?<name>Sally)", 
         text: "Call me Sally.", 
         groupName: "name"
@@ -190,8 +206,8 @@ static void RegexExamples()
     
     Console.WriteLine();
 
-    DisplayRegexExample(
-        regexName: "regex2",
+    RegexGetGroupValuesExample(
+        regexName: "regex4",
         pattern: @"[Cc]all me (?<name>\w+)", 
         text: "Call me Sarah, don't call me Sally!", 
         groupName: "name"
@@ -200,8 +216,8 @@ static void RegexExamples()
             
     Console.WriteLine();
 
-    DisplaMatchCollectionExample(
-        regexName: "regex3",
+    MatchCollectionGetGroupValuesExample(
+        regexName: "regex5",
         pattern: @"(?<verb>\w+)\s+(?<pronoun>\w+)\s(?<name>\w+)\.", 
         text: "Call me Sally.", 
         groupNames: ["verb", "pronoun", "name"]
@@ -228,7 +244,22 @@ static void FormatExamples()
     Console.WriteLine(employees.FormatAsTable([new(_ => _.Name), new(_ => _.Surname), new(_ => _.Department.Name, "Department")]));
 }
 
-static void DisplayRegexExample(
+static void RegexGetValuesExample(
+    string regexName,
+    string pattern, 
+    string text)
+{
+    var regex = new Regex(pattern);
+
+    var regexStatement = $"var {regexName} = new Regex(@{pattern.Display()});";
+    Console.WriteLine(regexStatement);
+
+    var command = $"{regexName}.GetValues({text.Display()});";
+    var result = regex.GetValues(text);
+    Console.WriteLine($"{command} // {result.Display()}");
+}
+
+static void RegexGetGroupValuesExample(
     string regexName,
     string pattern, 
     string text, 
@@ -236,7 +267,7 @@ static void DisplayRegexExample(
 {
     var regex = new Regex(pattern);
 
-    var regexStatement = $"var {regexName} = new Regex({pattern.Display()});";
+    var regexStatement = $"var {regexName} = new Regex(@{pattern.Display()});";
     Console.WriteLine(regexStatement);
 
     var command = $"{regexName}.GetGroupValues({text.Display()}, {groupName.Display()});";
@@ -244,13 +275,34 @@ static void DisplayRegexExample(
     Console.WriteLine($"{command} // {result.Display()}");
 }
 
-static void DisplaMatchCollectionExample(
+
+static void MatchCollectionGetValuesExample(
+    string regexName,
+    string pattern, 
+    string text)
+{
+    var regexStatement = $"var {regexName} = new Regex(@{pattern.Display()});";
+    var matchCollectionStatement = $"var matches = {regexName}.Matches({text.Display()})";
+
+    Console.WriteLine(regexStatement);
+    Console.WriteLine(matchCollectionStatement);
+
+    var regex = new Regex(pattern);
+    var matches = regex.Matches(text);
+
+    var command = $"matches.GetValues();";
+    var result = matches.GetValues();
+    Console.WriteLine($"{command} // {result.Display()}");
+
+}
+
+static void MatchCollectionGetGroupValuesExample(
     string regexName,
     string pattern, 
     string text, 
     string[] groupNames)
 {
-    var regexStatement = $"var {regexName} = new Regex({pattern.Display()});";
+    var regexStatement = $"var {regexName} = new Regex(@{pattern.Display()});";
     var matchCollectionStatement = $"var matches = {regexName}.Matches({text.Display()})";
 
     Console.WriteLine(regexStatement);
@@ -261,11 +313,10 @@ static void DisplaMatchCollectionExample(
 
     foreach(var groupName in groupNames)
     {
-        var command = $"matches.GetGroupValues({groupName.Display()});";
-        var result = matches.GetGroupValues(groupName);
+        var command = $"matches.GetGroupValues({groupName.Display()}).FirstOrDefault();";
+        var result = matches.GetGroupValues(groupName).FirstOrDefault();
         Console.WriteLine($"{command} // {result.Display()}");
     }
-
 }
 
 internal static class DisplayExtensions

@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Concurrent;
 using System.Reflection;
 
+namespace Bodde.Common.Extensions;
+
 public static class TypeExtensions
 {
     extension(Type type)
