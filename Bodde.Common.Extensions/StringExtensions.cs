@@ -188,6 +188,26 @@ public static class StringExtensions
 
             return ProcessTokens(me.Split([separator], StringSplitOptions.None), trim, removeEmpty);
         }
+
+        public T ConvertTo<T>()
+            => (T)me.ConvertTo(typeof(T));
+
+        public object ConvertTo(Type targetType)
+        {            
+            if (targetType.IsEnum) 
+                return Enum.Parse(targetType, me);
+
+            if (targetType == typeof(TimeSpan)) 
+                return TimeSpan.Parse(me);
+
+            if (targetType == typeof(DateTime)) 
+                return DateTimeOffset.Parse(me);
+                
+            if (targetType == typeof(DateTimeOffset)) 
+                return DateTimeOffset.Parse(me);
+            
+            return Convert.ChangeType(me, targetType);
+        }
     }
 
     private static string PluralizeInternal(string me)
