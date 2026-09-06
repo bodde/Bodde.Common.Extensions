@@ -10,24 +10,28 @@ public static class StringExtensions
         /// <summary>
         /// Determines whether the string is null or empty.
         /// </summary>
+        /// <returns><see langword="true"/> if the string is null or empty; otherwise, <see langword="false"/>.</returns>
         public bool IsNullOrEmpty() => string.IsNullOrEmpty(me);
 
         /// <summary>
         /// Determines whether the string is null, empty, or contains only white-space characters.
         /// </summary>
+        /// <returns><see langword="true"/> if the string is null, empty, or contains only white-space characters; otherwise, <see langword="false"/>.</returns>
         public bool IsNullOrWhiteSpace() => string.IsNullOrWhiteSpace(me);
     }
 
     extension([NotNullWhen(true)]string? me)
     {
         /// <summary>
-        /// Determines whether a string is not null and not empty.
+        /// Determines whether the string is not null and not empty.
         /// </summary>
+        /// <returns><see langword="true"/> if the string is not null and not empty; otherwise, <see langword="false"/>.</returns>
         public bool IsNotNullOrEmpty() => string.IsNullOrEmpty(me) == false;
 
         /// <summary>
-        /// Determines whether a string is not null and contains at least one non-whitespace character.
+        /// Determines whether the string is not null and contains at least one non-whitespace character.
         /// </summary>
+        /// <returns><see langword="true"/> if the string is not null and contains at least one non-whitespace character; otherwise, <see langword="false"/>.</returns>
         public bool IsNotNullOrWhiteSpace() => string.IsNullOrWhiteSpace(me) == false;
     }
 
@@ -36,6 +40,7 @@ public static class StringExtensions
         /// <summary>
         /// Returns an empty string if the string is null; otherwise, returns the original string.
         /// </summary>
+        /// <returns>The original string or an empty string if the value is null.</returns>
         public string OrEmpty() => me.IsNullOrEmpty() ? string.Empty : me;
     }
 
@@ -44,16 +49,19 @@ public static class StringExtensions
         /// <summary>
         /// Determines whether the string is empty.
         /// </summary>
+        /// <returns><see langword="true"/> if the string is empty; otherwise, <see langword="false"/>.</returns>
         public bool IsEmpty() => me.Length == 0;
 
         /// <summary>
         /// Determines whether the string is empty or contains only white-space characters.
         /// </summary>
+        /// <returns><see langword="true"/> if the string is empty or only contains white-space characters; otherwise, <see langword="false"/>.</returns>
         public bool IsEmptyOrWhiteSpace() => me.Length == 0 || string.IsNullOrWhiteSpace(me);
 
         /// <summary>
         /// Determines whether the first character of the string is uppercase.
         /// </summary>
+        /// <returns><see langword="true"/> if the first character is uppercase; otherwise, <see langword="false"/>.</returns>
         public bool IsCapitalized()
         {
             if (me.Length == 0)
@@ -65,6 +73,7 @@ public static class StringExtensions
         /// <summary>
         /// Converts the first character of the string to uppercase.
         /// </summary>
+        /// <returns>A copy of the string with its first character converted to uppercase.</returns>
         public string Capitalize()
         {
             if (me.IsNullOrEmpty())
@@ -76,6 +85,7 @@ public static class StringExtensions
         /// <summary>
         /// Converts the first character of the string to lowercase.
         /// </summary>
+        /// <returns>A copy of the string with its first character converted to lowercase.</returns>
         public string Uncapitalize()
         {
             if (me.IsNullOrEmpty())
@@ -87,6 +97,7 @@ public static class StringExtensions
         /// <summary>
         /// Returns the plural form of the string.
         /// </summary>
+        /// <returns>The pluralized version of the string.</returns>
         public string Pluralize()
         {
             if (me.IsNullOrEmpty())
@@ -106,10 +117,10 @@ public static class StringExtensions
             return result.Uncapitalize();
         }
 
-
         /// <summary>
-        /// Converts the string to kebab-case using hyphens as separators.
+        /// Converts the string to kebab-case by inserting hyphens before uppercase letters and lowercasing the content.
         /// </summary>
+        /// <returns>A hyphenized version of the string.</returns>
         public string Hyphenize()
         {
             if (me.IsNullOrEmpty())
@@ -130,6 +141,7 @@ public static class StringExtensions
         /// <summary>
         /// Removes hyphens and capitalizes the following character.
         /// </summary>
+        /// <returns>A de-hyphenized version of the string.</returns>
         public string Dehyphenize()
         {
             if (me.IsNullOrEmpty())
@@ -165,7 +177,7 @@ public static class StringExtensions
         /// <summary>
         /// Splits the string into tokens using the specified separator.
         /// </summary>
-        /// <param name="separator">The character used to separate tokens.</param>
+        /// <param name="separator">The string used to separate tokens.</param>
         /// <param name="trim">Indicates whether leading and trailing whitespace should be removed from each token.</param>
         /// <param name="removeEmpty">Indicates whether empty tokens should be removed from the result.</param>
         /// <returns>An array containing the tokens extracted from the string.</returns>

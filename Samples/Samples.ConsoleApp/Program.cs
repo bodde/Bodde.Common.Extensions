@@ -1,4 +1,6 @@
 ﻿
+using System.Runtime.Intrinsics.Arm;
+using System.Text.RegularExpressions;
 using Bodde.Common.Extensions;
 
 StringExamples();
@@ -6,6 +8,7 @@ ToCsvExamples();
 FromCsvExamples();
 ArrayExamples();
 TypeExamples();
+RegexExamples();
 FormatExamples();
 
 static void StringExamples()
@@ -14,66 +17,66 @@ static void StringExamples()
     Console.WriteLine("String Examples");
     Console.WriteLine("------------------------------------------------------------------------------");
 
-    Console.WriteLine($"((string?)null).IsNullOrEmpty() => {((string?)null).IsNullOrEmpty()}"); // true
+    Console.WriteLine($"((string?)null).IsNullOrEmpty() // {((string?)null).IsNullOrEmpty()}"); // true
 
     var value = " \t ";
-    Console.WriteLine($"{value.Display()}.IsNullOrWhiteSpace() => {value.IsNullOrWhiteSpace()}"); // true
+    Console.WriteLine($"{value.Display()}.IsNullOrWhiteSpace() // {value.IsNullOrWhiteSpace()}"); // true
 
     value = "";
-    Console.WriteLine($"{value.Display()}.IsEmpty => {value.IsEmpty()}"); // true
+    Console.WriteLine($"{value.Display()}.IsEmpty // {value.IsEmpty()}"); // true
 
-    Console.WriteLine($"((string?)null).OrEmpty() => {((string?)null).OrEmpty().Display()}"); // ""
-
-    value = "Hello";
-    Console.WriteLine($"{value.Display()}.IsNotNullOrEmpty() => {value.IsNotNullOrEmpty()}"); // true
+    Console.WriteLine($"((string?)null).OrEmpty() // {((string?)null).OrEmpty().Display()}"); // ""
 
     value = "Hello";
-    Console.WriteLine($"{value.Display()}.IsNotNullOrWhiteSpace() => {value.IsNotNullOrWhiteSpace()}"); // true
+    Console.WriteLine($"{value.Display()}.IsNotNullOrEmpty() // {value.IsNotNullOrEmpty()}"); // true
 
     value = "Hello";
-    Console.WriteLine($"{value.Display()}.IsCapitalized() => {value.IsCapitalized()}"); // true
+    Console.WriteLine($"{value.Display()}.IsNotNullOrWhiteSpace() // {value.IsNotNullOrWhiteSpace()}"); // true
+
+    value = "Hello";
+    Console.WriteLine($"{value.Display()}.IsCapitalized() // {value.IsCapitalized()}"); // true
 
     value = "hello";
-    Console.WriteLine($"{value.Display()}.Capitalize() => {value.Capitalize()}"); // "Hello"
+    Console.WriteLine($"{value.Display()}.Capitalize() // {value.Capitalize()}"); // "Hello"
 
     value = "Hello";
-    Console.WriteLine($"{value.Display()}.Uncapitalize() => {value.Uncapitalize()}"); // "hello"
+    Console.WriteLine($"{value.Display()}.Uncapitalize() // {value.Uncapitalize()}"); // "hello"
 
     value = "box";
-    Console.WriteLine($"{value.Display()}.Pluralize() => {value.Pluralize()}"); // "boxes"
+    Console.WriteLine($"{value.Display()}.Pluralize() // {value.Pluralize()}"); // "boxes"
 
     value = "HelloWorld";
-    Console.WriteLine($"{value.Display()}.Hyphenize() => {value.Hyphenize()}"); // "hello-world"
+    Console.WriteLine($"{value.Display()}.Hyphenize() // {value.Hyphenize()}"); // "hello-world"
 
     value = "hello-world";
-    Console.WriteLine($"{value.Display()}.Dehyphenize() => {value.Dehyphenize()}"); // "helloWorld"
+    Console.WriteLine($"{value.Display()}.Dehyphenize() // {value.Dehyphenize()}"); // "helloWorld"
 
     value = "A,B,C";
-    Console.WriteLine($"{value.Display()}.Tokenize(',') => {value.Tokenize(',').Display()}"); // ["A", "B", "C"]
+    Console.WriteLine($"{value.Display()}.Tokenize(',') // {value.Tokenize(',').Display()}"); // ["A", "B", "C"]
 
     value = "A, B, C";
-    Console.WriteLine($"{value.Display()}.Tokenize(',') => {value.Tokenize(',').Display()}"); // ["A", " B", " C"]
+    Console.WriteLine($"{value.Display()}.Tokenize(',') // {value.Tokenize(',').Display()}"); // ["A", " B", " C"]
 
     value = "A, B, C";
-    Console.WriteLine($"{value.Display()}.Tokenize(',', trim: true) => {value.Tokenize(',', trim: true).Display()}"); // ["A", "B", "C"]
+    Console.WriteLine($"{value.Display()}.Tokenize(',', trim: true) // {value.Tokenize(',', trim: true).Display()}"); // ["A", "B", "C"]
 
     value = "A|B|C";
-    Console.WriteLine($"{value.Display()}.Tokenize('|') => {value.Tokenize('|').Display()}"); // ["A", "B", "C"]
+    Console.WriteLine($"{value.Display()}.Tokenize('|') // {value.Tokenize('|').Display()}"); // ["A", "B", "C"]
 
     value = "A||C";
-    Console.WriteLine($"{value.Display()}.Tokenize('|') => {value.Tokenize('|').Display()}"); // ["A", "", "C"]
+    Console.WriteLine($"{value.Display()}.Tokenize('|') // {value.Tokenize('|').Display()}"); // ["A", "", "C"]
 
     value = "A||C";
-    Console.WriteLine($"{value.Display()}.Tokenize('|', removeEmpty: true) => {value.Tokenize('|', removeEmpty: true).Display()}"); // ["A", "C"]
+    Console.WriteLine($"{value.Display()}.Tokenize('|', removeEmpty: true) // {value.Tokenize('|', removeEmpty: true).Display()}"); // ["A", "C"]
 
     value = "A| |C";
-    Console.WriteLine($"{value.Display()}.Tokenize('|', removeEmpty: true) => {value.Tokenize('|', removeEmpty: true).Display()}"); // ["A", " ", "C"]
+    Console.WriteLine($"{value.Display()}.Tokenize('|', removeEmpty: true) // {value.Tokenize('|', removeEmpty: true).Display()}"); // ["A", " ", "C"]
 
     value = "A| |C";
-    Console.WriteLine($"{value.Display()}.Tokenize('|', trim: true, removeEmpty: true) => {value.Tokenize('|', trim: true, removeEmpty: true).Display()}"); // ["A", "C"]
+    Console.WriteLine($"{value.Display()}.Tokenize('|', trim: true, removeEmpty: true) // {value.Tokenize('|', trim: true, removeEmpty: true).Display()}"); // ["A", "C"]
 
     value = "A<->B<->C";
-    Console.WriteLine($"{value.Display()}.Tokenize(separator: \"<->\") => {value.Tokenize("<->").Display()}");
+    Console.WriteLine($"{value.Display()}.Tokenize(separator: \"<->\") // {value.Tokenize("<->").Display()}");
 
 }
 
@@ -85,9 +88,9 @@ static void ToCsvExamples()
 
     string[] values = ["A", "B", "C"];
 
-    Console.WriteLine($"{values.Display()}.ToCsv() => {values.ToCsv().Display()}"); // "A,B,C"
+    Console.WriteLine($"{values.Display()}.ToCsv() // {values.ToCsv().Display()}"); // "A,B,C"
 
-    Console.WriteLine($"{values.Display()}.ToCsv(separator: \"; \") => \"{values.ToCsv(separator: "; ")}\""); //  "A; B; C"
+    Console.WriteLine($"{values.Display()}.ToCsv(separator: \"; \") // \"{values.ToCsv(separator: "; ")}\""); //  "A; B; C"
 
     var employees = new[]
     {
@@ -99,7 +102,7 @@ static void ToCsvExamples()
         formatter: e => $"{e.Surname}, {e.Name} ({e.Age})",
         separator: "; "
     );
-    Console.WriteLine($"<employees>.ToCsv(formatter: e => $\"{{e.Surname}}, {{e.Name}} {{e.Age}})\", separator: \"; \") => {csv3.Display()}"); // "Smith, John (35); Rossi, Mario (23)"
+    Console.WriteLine($"<employees>.ToCsv(formatter: e => $\"{{e.Surname}}, {{e.Name}} {{e.Age}})\", separator: \"; \") // {csv3.Display()}"); // "Smith, John (35); Rossi, Mario (23)"
 }
 
 static void FromCsvExamples()
@@ -109,25 +112,25 @@ static void FromCsvExamples()
     Console.WriteLine("------------------------------------------------------------------------------");
 
     string input1 = "A, B, C";
-    Console.WriteLine($"{input1.Display()}.FromCsv() => {input1.FromCsv().Display()}"); // ["A", "B", "C"]
+    Console.WriteLine($"{input1.Display()}.FromCsv() // {input1.FromCsv().Display()}"); // ["A", "B", "C"]
 
     string input2 = "A, B, C";
     Console.WriteLine($"{input2.Display()}.FromCsv(trim: false): {input2.FromCsv(trim: false).Display()}"); // ["A", " B", " C"]
 
     string input3 = "A, B, , C";
-    Console.WriteLine($"{input3.Display()}.FromCsv() => {input3.FromCsv().Display()}"); // ["A", " B", " ", "C"]
+    Console.WriteLine($"{input3.Display()}.FromCsv() // {input3.FromCsv().Display()}"); // ["A", " B", " ", "C"]
 
     string input4 = "A, B, , C";
-    Console.WriteLine($"{input4.Display()}.FromCsv(removeEmpty: true) => {input4.FromCsv(removeEmpty: true).Display()}"); // ["A", "B", "C"]
+    Console.WriteLine($"{input4.Display()}.FromCsv(removeEmpty: true) // {input4.FromCsv(removeEmpty: true).Display()}"); // ["A", "B", "C"]
 
     string input5 = "10, 20, 30";
-    Console.WriteLine($"{input5.Display()}.FromCsv<int>() => {input5.FromCsv<int>().Display()}"); // [10, 20, 30]
+    Console.WriteLine($"{input5.Display()}.FromCsv<int>() // {input5.FromCsv<int>().Display()}"); // [10, 20, 30]
 
     string input6 = "true, false, true";
-    Console.WriteLine($"{input6.Display()}.FromCsv<bool>() => {input6.FromCsv<bool>().Display()}"); // [true, false, true]
+    Console.WriteLine($"{input6.Display()}.FromCsv<bool>() // {input6.FromCsv<bool>().Display()}"); // [true, false, true]
 
     string input7 = "A|B|C";
-    Console.WriteLine($"{input7.Display()}.FromCsv(separator: \"|\") => {input7.FromCsv(separator: "|").Display()}"); // ["A", "B", "C"]
+    Console.WriteLine($"{input7.Display()}.FromCsv(separator: \"|\") // {input7.FromCsv(separator: "|").Display()}"); // ["A", "B", "C"]
 }
 
 static void ArrayExamples()
@@ -140,21 +143,21 @@ static void ArrayExamples()
     string[] emptyValues = [];
     int[] values = [1, 2, 3];
 
-    Console.WriteLine($"((string[])null).IsNullOrEmpty() => {nullValues.IsNullOrEmpty()}"); // true
-    Console.WriteLine($"{emptyValues.Display()}.IsNullOrEmpty() => {emptyValues.IsNullOrEmpty()}"); // true
-    Console.WriteLine($"{values.Display()}.IsNullOrEmpty() => {values.IsNullOrEmpty()}"); // false
+    Console.WriteLine($"((string[])null).IsNullOrEmpty() // {nullValues.IsNullOrEmpty()}"); // true
+    Console.WriteLine($"{emptyValues.Display()}.IsNullOrEmpty() // {emptyValues.IsNullOrEmpty()}"); // true
+    Console.WriteLine($"{values.Display()}.IsNullOrEmpty() // {values.IsNullOrEmpty()}"); // false
 
-    Console.WriteLine($"((string[])null).IsNullOrEmpty() => {nullValues.IsNotNullOrEmpty()}"); // false
-    Console.WriteLine($"{emptyValues.Display()}.IsNotNullOrEmpty() => {emptyValues.IsNotNullOrEmpty()}"); // false 
-    Console.WriteLine($"{values.Display()}.IsNotNullOrEmpty() => {values.IsNotNullOrEmpty()}"); // true
+    Console.WriteLine($"((string[])null).IsNullOrEmpty() // {nullValues.IsNotNullOrEmpty()}"); // false
+    Console.WriteLine($"{emptyValues.Display()}.IsNotNullOrEmpty() // {emptyValues.IsNotNullOrEmpty()}"); // false 
+    Console.WriteLine($"{values.Display()}.IsNotNullOrEmpty() // {values.IsNotNullOrEmpty()}"); // true
 
-    Console.WriteLine($"{emptyValues.Display()}.IsEmpty() => {emptyValues.IsEmpty()}"); // true
+    Console.WriteLine($"{emptyValues.Display()}.IsEmpty() // {emptyValues.IsEmpty()}"); // true
 
-    Console.WriteLine($"{values.Display()}.IsEmpty() => {values.IsEmpty()}"); // false
+    Console.WriteLine($"{values.Display()}.IsEmpty() // {values.IsEmpty()}"); // false
 
-    Console.WriteLine($"((string[])null).OrEmpty() => {nullValues.OrEmpty().Display()}"); // []
+    Console.WriteLine($"((string[])null).OrEmpty() // {nullValues.OrEmpty().Display()}"); // []
 
-    Console.WriteLine($"{values.Display()}.OrEmpty() => {values.OrEmpty().Display()}"); // [1, 2, 3]
+    Console.WriteLine($"{values.Display()}.OrEmpty() // {values.OrEmpty().Display()}"); // [1, 2, 3]
 }
 
 static void TypeExamples()
@@ -163,13 +166,46 @@ static void TypeExamples()
     Console.WriteLine("Type Examples");
     Console.WriteLine("------------------------------------------------------------------------------");
 
-    Console.WriteLine($"typeof(Employee).IsCollection() => {typeof(Employee).IsCollection().Display()}"); // false
-    Console.WriteLine($"typeof(string).IsCollection() => {typeof(string).IsCollection().Display()}"); // false
-    Console.WriteLine($"typeof(int[]).IsCollection() => {typeof(int[]).IsCollection().Display()}"); // true
+    Console.WriteLine($"typeof(Employee).IsCollection() // {typeof(Employee).IsCollection().Display()}"); // false
+    Console.WriteLine($"typeof(string).IsCollection() // {typeof(string).IsCollection().Display()}"); // false
+    Console.WriteLine($"typeof(int[]).IsCollection() // {typeof(int[]).IsCollection().Display()}"); // true
 
-    Console.WriteLine($"typeof(Employee).GetPropertyNames() => {typeof(Employee).GetPropertyNames().Display()}");
+    Console.WriteLine($"typeof(Employee).GetPropertyNames() // {typeof(Employee).GetPropertyNames().Display()}");
 
-    Console.WriteLine($"typeof(Employee).GetPropertyInfos() => {typeof(Employee).GetPropertyInfos().Display()}");
+    Console.WriteLine($"typeof(Employee).GetPropertyInfos() // {typeof(Employee).GetPropertyInfos().Display()}");
+}
+
+static void RegexExamples()
+{
+    Console.WriteLine();
+    Console.WriteLine("Regex Examples");
+    Console.WriteLine("------------------------------------------------------------------------------");
+
+    DisplayRegexExample(
+        regexName: "regex1",
+        pattern: @"(?<name>Sally)", 
+        text: "Call me Sally.", 
+        groupName: "name"
+        );
+    
+    Console.WriteLine();
+
+    DisplayRegexExample(
+        regexName: "regex2",
+        pattern: @"[Cc]all me (?<name>\w+)", 
+        text: "Call me Sarah, don't call me Sally!", 
+        groupName: "name"
+        );
+
+            
+    Console.WriteLine();
+
+    DisplaMatchCollectionExample(
+        regexName: "regex3",
+        pattern: @"(?<verb>\w+)\s+(?<pronoun>\w+)\s(?<name>\w+)\.", 
+        text: "Call me Sally.", 
+        groupNames: ["verb", "pronoun", "name"]
+        );
 }
 
 static void FormatExamples()
@@ -192,16 +228,56 @@ static void FormatExamples()
     Console.WriteLine(employees.FormatAsTable([new(_ => _.Name), new(_ => _.Surname), new(_ => _.Department.Name, "Department")]));
 }
 
+static void DisplayRegexExample(
+    string regexName,
+    string pattern, 
+    string text, 
+    string groupName)
+{
+    var regex = new Regex(pattern);
+
+    var regexStatement = $"var {regexName} = new Regex({pattern.Display()});";
+    Console.WriteLine(regexStatement);
+
+    var command = $"{regexName}.GetGroupValues({text.Display()}, {groupName.Display()});";
+    var result = regex.GetGroupValues(text, groupName);
+    Console.WriteLine($"{command} // {result.Display()}");
+}
+
+static void DisplaMatchCollectionExample(
+    string regexName,
+    string pattern, 
+    string text, 
+    string[] groupNames)
+{
+    var regexStatement = $"var {regexName} = new Regex({pattern.Display()});";
+    var matchCollectionStatement = $"var matches = {regexName}.Matches({text.Display()})";
+
+    Console.WriteLine(regexStatement);
+    Console.WriteLine(matchCollectionStatement);
+
+    var regex = new Regex(pattern);
+    var matches = regex.Matches(text);
+
+    foreach(var groupName in groupNames)
+    {
+        var command = $"matches.GetGroupValues({groupName.Display()});";
+        var result = matches.GetGroupValues(groupName);
+        Console.WriteLine($"{command} // {result.Display()}");
+    }
+
+}
+
 internal static class DisplayExtensions
 {
     internal static string Display<T>(this T[] values)
     {
-        return String.Concat("[", values.ToCsv(_ => Display(_)), "]");
+        return string.Concat("[", values.ToCsv(_ => Display(_.ToString())), "]");
     }
 
     internal static string Display(this string value)
     {
-        return String.Concat("\"", value, "\"");
+        return string.Concat("\"", value, "\"");
     }
 
     internal static string Display<T>(this T value)

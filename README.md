@@ -59,6 +59,8 @@ using Bodde.Common.Extensions;
 | `string` | [`Dehyphenize`](#stringdehyphenize) | Removes hyphens and capitalizes the character following each hyphen. |
 | `string` | [`Tokenize by character`](#stringtokenize-by-character) | Splits a string into tokens using a character separator. |
 | `string` | [`Tokenize by string`](#stringtokenize-by-string) | Splits a string into tokens using a string separator. |
+| `Regex` | [`GetGroupValues`](#regexgetgroupvalues) | Gets all successful captures for a named group across every match in the input text. |
+| `MatchCollection` | [`GetGroupValues`](#matchcollectiongetgroupvalues) | Gets all successful captures for a named group from a collection of matches. |
 | `Type` | [`IsNullable`](#typeisnullable) | Determines whether a type can contain a null value. |
 | `Type` | [`IsNumeric`](#typeisnumeric) | Determines whether a type is one of the supported numeric types. |
 | `Type` | [`IsCollection`](#typeiscollection) | Determines whether a type represents a collection, excluding `string`. |
@@ -411,6 +413,44 @@ Splits a string into tokens using a string separator. An empty separator throws 
 
 ```csharp
 var values = "A<->B<->C".Tokenize("<->"); // ["A", "B", "C"]
+```
+
+### Regex.GetGroupValues
+
+Gets all successful captures for the specified named group across every match in the input text.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| `input` | `string` | Required | The input text to search. |
+| `groupName` | `string` | Required | The name of the capturing group to extract. |
+
+**Return type:** `string[]` - The values captured for the named group.
+
+```csharp
+var pattern = @"(?<name>\w+)";
+var input = "Call me Sarah, don't call me Sally!";
+
+var values = new Regex(pattern).GetGroupValues(input, "name");
+// ["Sarah", "Sally"]
+```
+
+### MatchCollection.GetGroupValues
+
+Gets all successful captures for the specified named group from a collection of matches.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| `groupName` | `string` | Required | The name of the capturing group to extract. |
+
+**Return type:** `string[]` - The values captured for the named group.
+
+```csharp
+var regex = new Regex("(?<verb>\w+)\s+(?<pronoun>\w+)\s(?<name>\w+)\.");
+var matches = regex.Matches("Call me Sally.")
+
+var verb = matches.GetGroupValues("verb").FirstOrDefault(); // "Call"
+var pronoun = matches.GetGroupValues("pronoun").FirstOrDefault(); // "me"
+var name = matches.GetGroupValues("name").FirstOrDefault(); // "Sally"
 ```
 
 ### Type.IsNullable
