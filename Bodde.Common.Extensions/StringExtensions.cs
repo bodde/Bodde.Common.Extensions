@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Text;
 
 namespace Bodde.Common.Extensions;
@@ -189,24 +190,36 @@ public static class StringExtensions
             return ProcessTokens(me.Split([separator], StringSplitOptions.None), trim, removeEmpty);
         }
 
+        /// <summary>
+        /// Converts the string to the specified type using <see cref="CultureInfo.InvariantCulture"/>.
+        /// </summary>
+        /// <typeparam name="T">The target type. Supported types include types implementing <see cref="IConvertible"/>, enumerations, <see cref="TimeSpan"/>, <see cref="DateTime"/>, <see cref="DateTimeOffset"/>, and their nullable forms.</typeparam>
+        /// <returns>The converted value.</returns>
         public T ConvertTo<T>()
             => (T)me.ConvertTo(typeof(T));
 
+        /// <summary>
+        /// Converts the string to the specified type using <see cref="CultureInfo.InvariantCulture"/>.
+        /// </summary>
+        /// <param name="targetType">The target type. Supported types include types implementing <see cref="IConvertible"/>, enumerations, <see cref="TimeSpan"/>, <see cref="DateTime"/>, <see cref="DateTimeOffset"/>, and their nullable forms.</param>
+        /// <returns>The converted value.</returns>
         public object ConvertTo(Type targetType)
-        {            
+        {
+            targetType = Nullable.GetUnderlyingType(targetType) ?? targetType;
+
             if (targetType.IsEnum) 
                 return Enum.Parse(targetType, me);
 
             if (targetType == typeof(TimeSpan)) 
-                return TimeSpan.Parse(me);
+                return TimeSpan.Parse(me, CultureInfo.InvariantCulture);
 
             if (targetType == typeof(DateTime)) 
-                return DateTimeOffset.Parse(me);
+                return DateTime.Parse(me, CultureInfo.InvariantCulture);
                 
             if (targetType == typeof(DateTimeOffset)) 
-                return DateTimeOffset.Parse(me);
+                return DateTimeOffset.Parse(me, CultureInfo.InvariantCulture);
             
-            return Convert.ChangeType(me, targetType);
+            return Convert.ChangeType(me, targetType, CultureInfo.InvariantCulture);
         }
     }
 

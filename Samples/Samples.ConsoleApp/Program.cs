@@ -1,5 +1,4 @@
 ﻿
-using System.Runtime.Intrinsics.Arm;
 using System.Text.RegularExpressions;
 using Bodde.Common.Extensions;
 
@@ -78,6 +77,25 @@ static void StringExamples()
     value = "A<->B<->C";
     Console.WriteLine($"{value.Display()}.Tokenize(separator: \"<->\") // {value.Tokenize("<->").Display()}");
 
+    value = "10";
+    Console.WriteLine($"{value.Display()}.ConvertTo<int>() // {value.ConvertTo<int>().Display()}");
+
+    value = "10";
+    Console.WriteLine($"{value.Display()}.ConvertTo(typeof(int)) // {value.ConvertTo(typeof(int)).Display()}");
+
+    value = "3.14";
+    Console.WriteLine($"{value.Display()}.ConvertTo<decimal>() // {value.ConvertTo<decimal>().Display()}");
+
+    value = "2:15:30";
+    Console.WriteLine($"{value.Display()}.ConvertTo<TimeSpan>() // {value.ConvertTo<TimeSpan>().Display()}");
+
+    value = "2009-06-15T13:45:30Z";
+    Console.WriteLine($"{value.Display()}.ConvertTo<DateTime>() // {value.ConvertTo<DateTime>().Display()}");
+
+    value = "2009-06-15T13:45:30Z";
+    Console.WriteLine($"{value.Display()}.ConvertTo(typeof(DateTimeOffset)) // {value.ConvertTo(typeof(DateTimeOffset)).Display()}");
+
+    
 }
 
 static void ToCsvExamples()
