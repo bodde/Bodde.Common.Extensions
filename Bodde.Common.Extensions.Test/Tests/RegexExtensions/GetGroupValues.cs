@@ -3,7 +3,7 @@ using Bodde.Common.Extensions;
 
 namespace RegexExtensions;
 
-public class GroupValues
+public class GetGroupValues
 {
     [Theory]
     [InlineData("", "", "test", "")]
@@ -13,7 +13,7 @@ public class GroupValues
     public void Test(string pattern, string input, string groupName, string expectedCsv)
     {
         var sut = new Regex(pattern);
-        var actual = sut.GroupValues(input, groupName);
+        var actual = sut.GetGroupValues(input, groupName);
 
         Assert.Equal(expectedCsv, actual.ToCsv());
     }

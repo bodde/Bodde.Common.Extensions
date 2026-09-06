@@ -4,7 +4,7 @@ public static class RegexExtensions
 {
     extension(Regex regex)
     {
-        public string[] GroupValues(string input, string groupName)
+        public string[] GetGroupValues(string input, string groupName)
         {
             return regex
                 .Matches(input)
