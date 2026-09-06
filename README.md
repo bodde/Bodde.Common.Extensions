@@ -59,9 +59,11 @@ using Bodde.Common.Extensions;
 | `string` | [`Dehyphenize`](#stringdehyphenize) | Removes hyphens and capitalizes the character following each hyphen. |
 | `string` | [`Tokenize by character`](#stringtokenize-by-character) | Splits a string into tokens using a character separator. |
 | `string` | [`Tokenize by string`](#stringtokenize-by-string) | Splits a string into tokens using a string separator. |
-| `Regex` | [`GetValues`](#regexgetvalues) | Gets the matched text for every match in the input string. |
+| `Regex` | [`GetMatchValues`](#regexgetmatchvalues) | Gets the matched text for every match in the input string. |
+| `Regex` | [`GetGroupValues (all groups)`](#regexgetgroupvalues-all-groups) | Gets the captured values for every group, excluding the complete match group. |
 | `Regex` | [`GetGroupValues`](#regexgetgroupvalues) | Gets all successful captures for a named group across every match in the input text. |
-| `MatchCollection` | [`GetValues`](#matchcollectiongetvalues) | Gets the matched text for each regular expression match. |
+| `MatchCollection` | [`GetMatchValues`](#matchcollectiongetmatchvalues) | Gets the matched text for each regular expression match. |
+| `MatchCollection` | [`GetGroupValues (all groups)`](#matchcollectiongetgroupvalues-all-groups) | Gets the captured values for every group, excluding the complete match group. |
 | `MatchCollection` | [`GetGroupValues`](#matchcollectiongetgroupvalues) | Gets all successful captures for a named group from a collection of matches. |
 | `Type` | [`IsNullable`](#typeisnullable) | Determines whether a type can contain a null value. |
 | `Type` | [`IsNumeric`](#typeisnumeric) | Determines whether a type is one of the supported numeric types. |
@@ -417,7 +419,7 @@ Splits a string into tokens using a string separator. An empty separator throws 
 var values = "A<->B<->C".Tokenize("<->"); // ["A", "B", "C"]
 ```
 
-### Regex.GetValues
+### Regex.GetMatchValues
 
 Gets the matched text for every match in the input string.
 
@@ -429,8 +431,24 @@ Gets the matched text for every match in the input string.
 
 ```csharp
 var regex = new Regex(@"(\w+)");
-var values = regex.GetValues("Call me Sarah");
+var values = regex.GetMatchValues("Call me Sarah");
 // ["Call", "me", "Sarah"]
+```
+
+### Regex.GetGroupValues (all groups)
+
+Gets the captured values for every group in every match. The first group of each match is skipped because it represents the complete match.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| `input` | `string` | Required | The input text to search. |
+
+**Return type:** `string[]` - The captured values for each group, excluding the first group of each match, which represents the complete match.
+
+```csharp
+var regex = new Regex(@"(\w+)-(\w+)");
+var values = regex.GetGroupValues("one-two three-four");
+// ["one", "two", "three", "four"]
 ```
 
 ### Regex.GetGroupValues
@@ -452,7 +470,7 @@ var values = new Regex(pattern).GetGroupValues(input, "name");
 // ["Sarah", "Sally"]
 ```
 
-### MatchCollection.GetValues
+### MatchCollection.GetMatchValues
 
 Gets the matched text for each regular expression match.
 
@@ -460,8 +478,20 @@ Gets the matched text for each regular expression match.
 
 ```csharp
 var matches = new Regex(@"(\w+)").Matches("Call me Sarah");
-var values = matches.GetValues();
+var values = matches.GetMatchValues();
 // ["Call", "me", "Sarah"]
+```
+
+### MatchCollection.GetGroupValues (all groups)
+
+Gets the captured values for every group in every match. The first group of each match is skipped because it represents the complete match.
+
+**Return type:** `string[]` - The captured values for each group, excluding the first group of each match, which represents the complete match.
+
+```csharp
+var matches = new Regex(@"(\w+)-(\w+)").Matches("one-two three-four");
+var values = matches.GetGroupValues();
+// ["one", "two", "three", "four"]
 ```
 
 ### MatchCollection.GetGroupValues

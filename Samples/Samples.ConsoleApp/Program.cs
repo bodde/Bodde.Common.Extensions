@@ -181,24 +181,34 @@ static void RegexExamples()
     Console.WriteLine("Regex Examples");
     Console.WriteLine("------------------------------------------------------------------------------");
 
-    RegexGetValuesExample(
-        regexName: "regex1",
+    var index = 1;
+
+    RegexGetMatchValuesExample(
+        regexName: $"regex{index++}",
         pattern: @"[Cc]all me (\w+)", 
         text: "Call me Sarah, don't call me Sally!"
+        );
+
+    Console.WriteLine();
+    
+    RegexGetGroupValuesExample(
+        regexName: $"regex{index++}",
+        pattern: @"(\w+)-(\w+)", 
+        text: "one-two three-four"
         );
     
     Console.WriteLine();
 
-    MatchCollectionGetValuesExample(
-        regexName: "regex2",
+    MatchCollectionGetGroupValuesExample(
+        regexName: $"regex{index++}",
         pattern: @"(\w+)", 
         text: "Call me Sally."
         );
     
     Console.WriteLine();
 
-    RegexGetGroupValuesExample(
-        regexName: "regex3",
+    RegexGetNamedGroupValuesExample(
+        regexName: $"regex{index++}",
         pattern: @"(?<name>Sally)", 
         text: "Call me Sally.", 
         groupName: "name"
@@ -206,8 +216,8 @@ static void RegexExamples()
     
     Console.WriteLine();
 
-    RegexGetGroupValuesExample(
-        regexName: "regex4",
+    RegexGetNamedGroupValuesExample(
+        regexName: $"regex{index++}",
         pattern: @"[Cc]all me (?<name>\w+)", 
         text: "Call me Sarah, don't call me Sally!", 
         groupName: "name"
@@ -216,8 +226,8 @@ static void RegexExamples()
             
     Console.WriteLine();
 
-    MatchCollectionGetGroupValuesExample(
-        regexName: "regex5",
+    MatchCollectionGetNamedGroupsValuesExample(
+        regexName: $"regex{index++}",
         pattern: @"(?<verb>\w+)\s+(?<pronoun>\w+)\s(?<name>\w+)\.", 
         text: "Call me Sally.", 
         groupNames: ["verb", "pronoun", "name"]
@@ -244,7 +254,8 @@ static void FormatExamples()
     Console.WriteLine(employees.FormatAsTable([new(_ => _.Name), new(_ => _.Surname), new(_ => _.Department.Name, "Department")]));
 }
 
-static void RegexGetValuesExample(
+
+static void RegexGetMatchValuesExample(
     string regexName,
     string pattern, 
     string text)
@@ -254,12 +265,27 @@ static void RegexGetValuesExample(
     var regexStatement = $"var {regexName} = new Regex(@{pattern.Display()});";
     Console.WriteLine(regexStatement);
 
-    var command = $"{regexName}.GetValues({text.Display()});";
-    var result = regex.GetValues(text);
+    var command = $"{regexName}.GetMatchValues({text.Display()});";
+    var result = regex.GetMatchValues(text);
     Console.WriteLine($"{command} // {result.Display()}");
 }
 
 static void RegexGetGroupValuesExample(
+    string regexName,
+    string pattern, 
+    string text)
+{
+    var regex = new Regex(pattern);
+
+    var regexStatement = $"var {regexName} = new Regex(@{pattern.Display()});";
+    Console.WriteLine(regexStatement);
+
+    var command = $"{regexName}.GetGroupValues({text.Display()});";
+    var result = regex.GetGroupValues(text);
+    Console.WriteLine($"{command} // {result.Display()}");
+}
+
+static void RegexGetNamedGroupValuesExample(
     string regexName,
     string pattern, 
     string text, 
@@ -276,7 +302,7 @@ static void RegexGetGroupValuesExample(
 }
 
 
-static void MatchCollectionGetValuesExample(
+static void MatchCollectionGetGroupValuesExample(
     string regexName,
     string pattern, 
     string text)
@@ -290,13 +316,13 @@ static void MatchCollectionGetValuesExample(
     var regex = new Regex(pattern);
     var matches = regex.Matches(text);
 
-    var command = $"matches.GetValues();";
-    var result = matches.GetValues();
+    var command = $"matches.GetGroupValues();";
+    var result = matches.GetGroupValues();
     Console.WriteLine($"{command} // {result.Display()}");
 
 }
 
-static void MatchCollectionGetGroupValuesExample(
+static void MatchCollectionGetNamedGroupsValuesExample(
     string regexName,
     string pattern, 
     string text, 

@@ -1,3 +1,4 @@
+using Bodde.Common.Extensions;
 using Bodde.Common.Extensions.Test.Models;
 
 namespace TypeExtensions;
@@ -15,6 +16,7 @@ public class GetPropertyNames
 
         Assert.Equal(expected, actual);
     }
+
 
     [Fact]
     public void EmployeeWithCache()

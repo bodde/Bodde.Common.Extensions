@@ -7,12 +7,22 @@ public static class RegexExtensions
     extension(Regex regex)
     {
         /// <summary>
+        /// Gets the matched text for every match in the input.
+        /// </summary>
+        /// <param name="input">The input text to search.</param>
+        /// <returns>An array containing the matched text for each match.</returns>
+        public string[] GetMatchValues(string input)
+            => regex.Matches(input).GetMatchValues();
+
+
+        /// <summary>
         /// Gets the matched text values for every match in the input.
         /// </summary>
         /// <param name="input">The input text to search.</param>
         /// <returns>An array containing the matched text for each match.</returns>
-        public string[] GetValues(string input)
-            => regex.Matches(input).GetValues();
+        /// <remarks>The first group of every match is skipped because it contains the complete match.</remarks>
+        public string[] GetGroupValues(string input)
+            => regex.Matches(input).GetGroupValues();
 
         /// <summary>
         /// Gets all successful captures for the specified named group across every match in the input text.
@@ -30,13 +40,26 @@ public static class RegexExtensions
         /// Gets the matched text for each regular expression match.
         /// </summary>
         /// <returns>An array containing the matched text for each match.</returns>
-        public string[] GetValues()
+        public string[] GetMatchValues()
         {
             return matchCollection
                 .Cast<Match>()
-                .SelectMany(_ => _.Groups.Cast<Group>().Skip(1))
-                .Select(match => match.Value)       
+                .Select(_ => _.Value)   
                 .ToArray();
+        }
+
+        /// <summary>
+        /// Gets the matched text for each regular expression match.
+        /// </summary>
+        /// <returns>An array containing the matched text for each match.</returns>
+        /// <remarks>The first group of every match is skipped because it contains the complete match.</remarks>
+        public string[] GetGroupValues()
+        {
+            return matchCollection
+               .Cast<Match>()
+               .SelectMany(_ => _.Groups.Cast<Group>().Skip(1)) // skip full match group
+               .Select(match => match.Value)
+               .ToArray();
         }
 
         /// <summary>
