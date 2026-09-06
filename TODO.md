@@ -4,11 +4,10 @@
 - [x] string? - IsNotNullOrWhitespace
 - [x] T[]? - IsNullOrEmpty
 - [x] T[]? - IsNotNullOrEmpty
-- [x] add NotNullWhen(false) attribute for IsNullOrEmpty and IsNullOrWhiteSpace
-- [x] add NotNullWhen(true) attribute for IsNotNullOrEmpty and IsNotNullOrWhiteSpace
-- [x] Type - IsCollection ((valueType.GetElementType() ?? valueType.GetGenericArguments().FirstOrDefault()) != null)
+- [x] Type - IsCollection
 - [x] Regex - GetGroupValues returns all matching values of a named group
 
-# Publish
-- [ ] New tag release
-- [ ] Publish to Nuget
+# CodeAnalysis
+
+- [x] NotNullWhen attribute applied to IsNullOrEmpty, IsNullOrWhiteSpace, IsNotNullOrEmpty and IsNotNullOrWhiteSpace
+
