@@ -1,5 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 
+namespace Bodde.Common.Extensions;
+
 public static class ArrayExtensions
 {
     extension<T>([NotNullWhen(false)]T[]? me)

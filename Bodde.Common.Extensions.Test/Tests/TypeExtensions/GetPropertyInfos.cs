@@ -1,3 +1,4 @@
+using Bodde.Common.Extensions;
 using Bodde.Common.Extensions.Test.Models;
 
 namespace TypeExtensions;

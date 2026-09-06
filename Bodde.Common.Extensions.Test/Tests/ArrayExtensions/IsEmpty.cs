@@ -1,3 +1,5 @@
+using Bodde.Common.Extensions;
+
 namespace ArrayExtensions;
 
 public class IsEmpty

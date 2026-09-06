@@ -59,7 +59,13 @@ using Bodde.Common.Extensions;
 | `string` | [`Dehyphenize`](#stringdehyphenize) | Removes hyphens and capitalizes the character following each hyphen. |
 | `string` | [`Tokenize by character`](#stringtokenize-by-character) | Splits a string into tokens using a character separator. |
 | `string` | [`Tokenize by string`](#stringtokenize-by-string) | Splits a string into tokens using a string separator. |
+| `string` | [`ConvertTo<T>`](#stringconvertt) | Converts a string to a supported target type using invariant culture. |
+| `string` | [`ConvertTo(Type)`](#stringconvertotype) | Converts a string to a supported target type using invariant culture. |
+| `Regex` | [`GetMatchValues`](#regexgetmatchvalues) | Gets the matched text for every match in the input string. |
+| `Regex` | [`GetGroupValues (all groups)`](#regexgetgroupvalues-all-groups) | Gets the captured values for every group, excluding the complete match group. |
 | `Regex` | [`GetGroupValues`](#regexgetgroupvalues) | Gets all successful captures for a named group across every match in the input text. |
+| `MatchCollection` | [`GetMatchValues`](#matchcollectiongetmatchvalues) | Gets the matched text for each regular expression match. |
+| `MatchCollection` | [`GetGroupValues (all groups)`](#matchcollectiongetgroupvalues-all-groups) | Gets the captured values for every group, excluding the complete match group. |
 | `MatchCollection` | [`GetGroupValues`](#matchcollectiongetgroupvalues) | Gets all successful captures for a named group from a collection of matches. |
 | `Type` | [`IsNullable`](#typeisnullable) | Determines whether a type can contain a null value. |
 | `Type` | [`IsNumeric`](#typeisnumeric) | Determines whether a type is one of the supported numeric types. |
@@ -415,6 +421,70 @@ Splits a string into tokens using a string separator. An empty separator throws 
 var values = "A<->B<->C".Tokenize("<->"); // ["A", "B", "C"]
 ```
 
+### string.ConvertTo\<T\>
+
+Converts the string to the specified target type using `CultureInfo.InvariantCulture`.
+
+Supported target types include types implementing `IConvertible`, enumerations, `TimeSpan`, `DateTime`, `DateTimeOffset`, and their nullable forms.
+
+**Return type:** `T` - The converted value.
+
+```csharp
+var integer = "10".ConvertTo<int>(); // 10
+var decimalValue = "3.14".ConvertTo<decimal>(); // 3.14
+var role = "Senior".ConvertTo<RoleType>(); // RoleType.Senior
+var duration = "2:15:30".ConvertTo<TimeSpan>(); // 02:15:30
+```
+
+### string.ConvertTo(Type)
+
+Converts the string to the specified target type using `CultureInfo.InvariantCulture`.
+
+Supported target types include types implementing `IConvertible`, enumerations, `TimeSpan`, `DateTime`, `DateTimeOffset`, and their nullable forms.
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `targetType` | `Type` | The target type. |
+
+**Return type:** `object` - The converted value.
+
+```csharp
+var integer = "10".ConvertTo(typeof(int)); // 10
+var date = "2009-06-15T13:45:30Z".ConvertTo(typeof(DateTimeOffset)); // 15/06/2009 13:45:30 +00:00
+```
+
+### Regex.GetMatchValues
+
+Gets the matched text for every match in the input string.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| `input` | `string` | Required | The input text to search. |
+
+**Return type:** `string[]` - The matched text for each regular expression match.
+
+```csharp
+var regex = new Regex(@"(\w+)");
+var values = regex.GetMatchValues("Call me Sarah");
+// ["Call", "me", "Sarah"]
+```
+
+### Regex.GetGroupValues (all groups)
+
+Gets the captured values for every group in every match. The first group of each match is skipped because it represents the complete match.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| `input` | `string` | Required | The input text to search. |
+
+**Return type:** `string[]` - The captured values for each group, excluding the first group of each match, which represents the complete match.
+
+```csharp
+var regex = new Regex(@"(\w+)-(\w+)");
+var values = regex.GetGroupValues("one-two three-four");
+// ["one", "two", "three", "four"]
+```
+
 ### Regex.GetGroupValues
 
 Gets all successful captures for the specified named group across every match in the input text.
@@ -432,6 +502,30 @@ var input = "Call me Sarah, don't call me Sally!";
 
 var values = new Regex(pattern).GetGroupValues(input, "name");
 // ["Sarah", "Sally"]
+```
+
+### MatchCollection.GetMatchValues
+
+Gets the matched text for each regular expression match.
+
+**Return type:** `string[]` - The matched text for each match.
+
+```csharp
+var matches = new Regex(@"(\w+)").Matches("Call me Sarah");
+var values = matches.GetMatchValues();
+// ["Call", "me", "Sarah"]
+```
+
+### MatchCollection.GetGroupValues (all groups)
+
+Gets the captured values for every group in every match. The first group of each match is skipped because it represents the complete match.
+
+**Return type:** `string[]` - The captured values for each group, excluding the first group of each match, which represents the complete match.
+
+```csharp
+var matches = new Regex(@"(\w+)-(\w+)").Matches("one-two three-four");
+var values = matches.GetGroupValues();
+// ["one", "two", "three", "four"]
 ```
 
 ### MatchCollection.GetGroupValues
