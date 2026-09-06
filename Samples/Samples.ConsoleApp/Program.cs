@@ -270,14 +270,21 @@ static void DisplaMatchCollectionExample(
 
 internal static class DisplayExtensions
 {
-    internal static string Display<T>(this T[] values)
+    internal static string Display(this string[] values)
     {
-        return string.Concat("[", values.ToCsv(_ => Display(_.ToString())), "]");
+        var csvValues = values.ToCsv(_ => Display(_));
+        return string.Concat("[", csvValues, "]");
     }
 
-    internal static string Display(this string value)
+    internal static string Display<T>(this T[] values)
     {
-        return string.Concat("\"", value, "\"");
+        var csvValues = values.ToCsv(_ => Display(_));
+        return string.Concat("[", csvValues, "]");
+    }
+
+    internal static string Display(this string? value)
+    {
+        return value is not null ? string.Concat("\"", value, "\"") : "<null>";
     }
 
     internal static string Display<T>(this T value)
