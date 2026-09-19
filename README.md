@@ -54,6 +54,13 @@ using Bodde.Common.Extensions;
 | `string` | [`IsCapitalized`](#stringiscapitalized) | Determines whether the first character of a string is uppercase. |
 | `string` | [`Capitalize`](#stringcapitalize) | Converts the first character of a string to uppercase. |
 | `string` | [`Uncapitalize`](#stringuncapitalize) | Converts the first character of a string to lowercase. |
+| `string` | [`EncloseIn`](#stringenclosein) | Encloses a string with the same text on both sides. |
+| `string` | [`EncloseIn (left and right)`](#stringenclosein-left-and-right) | Encloses a string with separate left and right values. |
+| `string` | [`DoubleQuote`](#stringdoublequote) | Encloses a string in double quotes. |
+| `string` | [`SingleQuote`](#stringsinglequote) | Encloses a string in single quotes. |
+| `string` | [`Parenthesize`](#stringparenthesize) | Encloses a string in parentheses. |
+| `string` | [`SquareBracketize`](#stringsquarebracketize) | Encloses a string in square brackets. |
+| `string` | [`CurlyBracketize`](#stringcurlybracketize) | Encloses a string in curly brackets. |
 | `string` | [`Pluralize`](#stringpluralize) | Returns a basic plural form of a word, including common irregular plurals. |
 | `string` | [`Hyphenize`](#stringhyphenize) | Converts a string to kebab-case. |
 | `string` | [`Dehyphenize`](#stringdehyphenize) | Removes hyphens and capitalizes the character following each hyphen. |
@@ -356,6 +363,85 @@ Converts the first character of a string to lowercase. `null` and empty values a
 
 ```csharp
 var result = "Hello".Uncapitalize(); // hello
+```
+
+### string.EncloseIn
+
+Encloses a string with the same text on both sides.
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `text` | `string` | The text placed before and after the string. |
+
+**Return type:** `string` - The string enclosed with the specified text.
+
+```csharp
+var result = "Hello".EncloseIn("*"); // *Hello*
+```
+
+### string.EncloseIn (left and right)
+
+Encloses a string with separate values on the left and right sides.
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `left` | `string` | The text placed before the string. |
+| `right` | `string` | The text placed after the string. |
+
+**Return type:** `string` - The string enclosed with the specified left and right values.
+
+```csharp
+var result = "Hello".EncloseIn("<", ">"); // <Hello>
+```
+
+### string.DoubleQuote
+
+Encloses a string in double quotes.
+
+**Return type:** `string` - The string enclosed in double quotes.
+
+```csharp
+var result = "Hello".DoubleQuote(); // "Hello"
+```
+
+### string.SingleQuote
+
+Encloses a string in single quotes.
+
+**Return type:** `string` - The string enclosed in single quotes.
+
+```csharp
+var result = "Hello".SingleQuote(); // 'Hello'
+```
+
+### string.Parenthesize
+
+Encloses a string in parentheses.
+
+**Return type:** `string` - The string enclosed in parentheses.
+
+```csharp
+var result = "Hello".Parenthesize(); // (Hello)
+```
+
+### string.SquareBracketize
+
+Encloses a string in square brackets.
+
+**Return type:** `string` - The string enclosed in square brackets.
+
+```csharp
+var result = "Hello".SquareBracketize(); // [Hello]
+```
+
+### string.CurlyBracketize
+
+Encloses a string in curly brackets.
+
+**Return type:** `string` - The string enclosed in curly brackets.
+
+```csharp
+var result = "Hello".CurlyBracketize(); // {Hello}
 ```
 
 ### string.Pluralize
