@@ -41,6 +41,27 @@ static void StringExamples()
     value = "Hello";
     Console.WriteLine($"{value.Display()}.Uncapitalize() // {value.Uncapitalize()}"); // "hello"
 
+    value = "Hello";
+    Console.WriteLine($"{value.Display()}.EncloseIn(\"*\") // {value.EncloseIn("*")}"); // "*Hello*"
+
+    value = "Hello";
+    Console.WriteLine($"{value.Display()}.EncloseIn(\"<\", \">\") // {value.EncloseIn("<", ">")}"); // "<Hello>"
+
+    value = "Hello";
+    Console.WriteLine($"{value.Display()}.DoubleQuote() // {value.DoubleQuote()}"); // "\"Hello\""
+
+    value = "Hello";
+    Console.WriteLine($"{value.Display()}.SingleQuote() // {value.SingleQuote()}"); // "'Hello'"
+
+    value = "Hello";
+    Console.WriteLine($"{value.Display()}.Parenthesize() // {value.Parenthesize()}"); // "(Hello)"
+
+    value = "Hello";
+    Console.WriteLine($"{value.Display()}.SquareBracketize() // {value.SquareBracketize()}"); // "[Hello]"
+
+    value = "Hello";
+    Console.WriteLine($"{value.Display()}.CurlyBracketize() // {value.CurlyBracketize()}"); // "{Hello}"
+
     value = "box";
     Console.WriteLine($"{value.Display()}.Pluralize() // {value.Pluralize()}"); // "boxes"
 

@@ -96,6 +96,72 @@ public static class StringExtensions
         }
 
         /// <summary>
+        /// Returns the string enclosed in double quotes.
+        /// </summary>
+        /// <returns>The string enclosed in double quotes.</returns>
+        public string DoubleQuote()
+        {
+            return me.EncloseIn("\"");
+        }
+
+        /// <summary>
+        /// Returns the string enclosed in single quotes.
+        /// </summary>
+        /// <returns>The string enclosed in single quotes.</returns>
+        public string SingleQuote()
+        {
+            return me.EncloseIn("'");
+        }
+
+        /// <summary>
+        /// Returns the string enclosed in parentheses.
+        /// </summary>
+        /// <returns>The string enclosed in parentheses.</returns>
+        public string Parenthesize()
+        {
+            return me.EncloseIn("(", ")");
+        }
+
+        /// <summary>
+        /// Returns the string enclosed in square brackets.
+        /// </summary>
+        /// <returns>The string enclosed in square brackets.</returns>
+        public string SquareBracketize()
+        {
+            return me.EncloseIn("[", "]");
+        }
+
+        /// <summary>
+        /// Returns the string enclosed in curly brackets.
+        /// </summary>
+        /// <returns>The string enclosed in curly brackets.</returns>
+        public string CurlyBracketize()
+        {
+            return me.EncloseIn("{", "}");
+        }
+
+        /// <summary>
+        /// Returns the string enclosed in the specified text on both sides.
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns>The string enclosed in the specified text on both sides</returns>
+        public string EncloseIn(string text)
+        {
+            return me.EncloseIn(text, text);
+        }
+
+        /// <summary>
+        /// Returns the string enclosed in the specified text on the left and right sides.
+        /// </summary>
+        /// <param name="left"></param>
+        /// <param name="right"></param>
+        /// <returns>The string enclosed in the specified text on the left and right sides</returns>
+        public string EncloseIn(string left, string right)
+        {
+            return string.Concat(left, me, right);
+        }
+
+        /// <summary>
         /// Returns the plural form of the string.
         /// </summary>
         /// <returns>The pluralized version of the string.</returns>
